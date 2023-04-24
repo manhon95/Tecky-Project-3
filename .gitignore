@@ -1,1 +1,3 @@
 .pyenv
+input/garbage-classification/
+saved_model/demo_garbage_model
