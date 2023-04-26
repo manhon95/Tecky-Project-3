@@ -1,0 +1,4 @@
+[core]
+    remote = tecky-project-3
+['remote "tecky-project-3"']
+    url = s3://tecky-project-3
