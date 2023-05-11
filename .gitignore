@@ -1,1 +1,6 @@
 .pyenv
+garbage_classification
+TTS
+recordings
+node_modules
+__pycache__
