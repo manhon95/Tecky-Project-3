@@ -9,9 +9,7 @@ export class UsersService {
   constructor(
     @InjectModel(User)
     private userModel: typeof User,
-  ) {
-    this.userModel.sync();
-  }
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
     return this.userModel.create({

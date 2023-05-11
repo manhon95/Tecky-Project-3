@@ -5,6 +5,18 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './models/users/users.module';
 import { User } from './models/users/entities/user.entity';
+import { Industry } from './models/industries/entities/industry.entity';
+import { Request } from './models/requests/entities/request.entity';
+import { Plan } from './models/plans/entities/plan.entity';
+import { Question } from './models/questions/entities/question.entity';
+import { UserQuestion } from './models/users_questions/entities/user_question.entity';
+import { Subscription } from './models/subscriptions/entities/subscription.entity';
+import { IndustriesModule } from './models/industries/industries.module';
+import { RequestsModule } from './models/requests/requests.module';
+import { PlansModule } from './models/plans/plans.module';
+import { QuestionsModule } from './models/questions/questions.module';
+import { UsersQuestionsModule } from './models/users_questions/users_questions.module';
+import { SubscriptionsModule } from './models/subscriptions/subscriptions.module';
 
 @Module({
   imports: [
@@ -16,9 +28,24 @@ import { User } from './models/users/entities/user.entity';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      models: [User],
+      models: [
+        User,
+        Industry,
+        Request,
+        Plan,
+        Question,
+        UserQuestion,
+        Subscription,
+      ],
+      synchronize: false,
     }),
     UsersModule,
+    IndustriesModule,
+    RequestsModule,
+    PlansModule,
+    QuestionsModule,
+    UsersQuestionsModule,
+    SubscriptionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

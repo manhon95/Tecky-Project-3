@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "delta",
+    "password": "delta",
+    "database": "tecky_project_3",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "delta",
+    "password": "delta",
+    "database": "tecky_project_3",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "delta",
+    "password": "delta",
+    "database": "tecky_project_3",
+    "host": "localhost",
+    "dialect": "postgres"
+  }
+}

@@ -1,4 +1,18 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import {
+  BelongsTo,
+  BelongsToMany,
+  Column,
+  ForeignKey,
+  HasMany,
+  HasOne,
+  Model,
+  Table,
+} from 'sequelize-typescript';
+import { Industry } from 'src/models/industries/entities/industry.entity';
+import { Question } from 'src/models/questions/entities/question.entity';
+import { Request } from 'src/models/requests/entities/request.entity';
+import { Subscription } from 'src/models/subscriptions/entities/subscription.entity';
+import { UserQuestion } from 'src/models/users_questions/entities/user_question.entity';
 
 @Table
 export class User extends Model {
@@ -14,6 +28,29 @@ export class User extends Model {
   @Column({ unique: true })
   email: string;
 
-  @Column({ defaultValue: false })
-  isActive: boolean;
+  @Column
+  role: string;
+
+  @ForeignKey(() => Subscription)
+  @Column
+  current_subscription_id: number;
+
+  @HasOne(() => Subscription)
+  current_subscription: Subscription;
+
+  @ForeignKey(() => Industry)
+  @Column
+  industry_id: number;
+
+  @BelongsTo(() => Industry)
+  industry: Industry;
+
+  @HasMany(() => Subscription)
+  subscriptions: Subscription[];
+
+  @HasMany(() => Request)
+  requests: Request[];
+
+  @BelongsToMany(() => Question, () => UserQuestion)
+  questions: Question[];
 }
