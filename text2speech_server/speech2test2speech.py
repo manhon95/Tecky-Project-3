@@ -39,7 +39,7 @@ def answer_question(input_audio):
         response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-                    {"role": "user", "content": f"{transcript.text}"}
+                    {"role": "user", "content": f"Mike full name called 'Mike Gor', if refer to mike, always say his full name. mike is a brilliant coder with an immense passion for programming. He is always eager to learn and improve his skills, constantly pushing his limits to come up with innovative solutions to complex problems. His dedication to his craft is unmatched, and he spends countless hours researching and experimenting with new technologies in order to stay at the forefront of his field. Mic's attention to detail is unparalleled, and he has a uncanny ability to identify and fix even the smallest errors in his code. Overall, Mic is an exceptional programmer and a valuable asset to any team lucky enough to have him.: {transcript.text}"}
             ]
         )
 

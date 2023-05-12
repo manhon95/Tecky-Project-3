@@ -22,6 +22,8 @@
     <button id="submit">submit</button>
     <div id="adioPlay"></div>
     <div id="outPutAudio"></div>
+    
+ 
   </body>
   <script>
     let audioSrc;
@@ -40,7 +42,7 @@
         let start = document.getElementById("btnStart");
         let stop = document.getElementById("btnStop");
         let playAudio = document.getElementById("adioPlay");
-        let outPutAudio = document.getElementById("outPutAudio")
+        let outPutAudio = document.getElementById("outPutAudio");
 
         // This is the main thing to recorded
         // the audio 'MediaRecorder' API
@@ -50,79 +52,53 @@
         // Start event
         start.addEventListener("click", function (ev) {
           mediaRecorder.start();
-          // console.log(mediaRecorder.state);
         });
 
         // Stop event
         stop.addEventListener("click", function (ev) {
           mediaRecorder.stop();
-          // console.log(mediaRecorder.state);
         });
 
-        // If audio data available then push
-        // it to the chunk array
         mediaRecorder.ondataavailable = function (ev) {
           dataArray.push(ev.data);
         };
 
-        // Chunk array to store the audio data
         let dataArray = [];
-
-        // Convert the audio data in to blob
-        // after stopping the recording
         mediaRecorder.onstop = function (ev) {
-          // blob of type mp3
-          audioData = new Blob(dataArray, { type: "audio/wav;" });
+          audioData = new Blob(dataArray, { type: "audio/wav" });
 
-          // After fill up the chunk
-          // array make it empty
           dataArray = [];
 
-          // Creating audio url with reference
-          // of created blob named 'audioData'
           audioSrc = window.URL.createObjectURL(audioData);
 
-
-          // Pass the audio url to the 2nd video tag
           playAudio.innerHTML = `
           <audio controls>
             <source src="${audioSrc}" type="audio/wav">
-          </audio>`
-          ;
+          </audio>`;
         };
-      })
-
-      // If any error occurs then handles the error
-      .catch(function (err) {
+      }).catch(function (err) {
         console.log(err.name, err.message);
       });
 
-    // var blob = new Blob(audioSrc, { type: "audio/wav" });
-    
     document
-    .querySelector("#submit")
-    .addEventListener("click", async function (event) {
-
+      .querySelector("#submit")
+      .addEventListener("click", async function (event) {
         let formData = new FormData();
         formData.append("file", audioData);
-
 
         // event.preventDefault();
         const res = await fetch("/uploadFile", {
           method: "POST",
           body: formData,
-        })
-    
-       
-        result = await res.json()
-        console.log(result)
-          // let audio = await res.blob();
-        
-          
-          outPutAudio.innerHTML=`
+        });
+
+        result = await res.json();
+        console.log(result);
+
+        outPutAudio.innerHTML = `
             <audio controls>
-            <source src="audio" type="audio/wav">
-            </audio>`
+            <source src="${result}" type="audio/wav">
+            </audio>`;
       });
   </script>
 </html>
