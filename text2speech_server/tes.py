@@ -1,5 +1,10 @@
-import os
+import openai
+import 
 
-os.mkdir("recordings")
-os.mkdir("recording/output")
-os.mkdir("recording/speaker_voice")
+openai.api_key = 
+
+
+audio_file = open(f"recordings/clip11.wav", "rb")
+transcript = openai.Audio.transcribe("whisper-1", audio_file)
+
+print("recording: ",transcript.text)

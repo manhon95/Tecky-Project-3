@@ -82,7 +82,6 @@
           // of created blob named 'audioData'
           audioSrc = window.URL.createObjectURL(audioData);
 
-          console.log(audioSrc);
 
           // Pass the audio url to the 2nd video tag
           playAudio.innerHTML = `
@@ -113,12 +112,16 @@
           method: "POST",
           body: formData,
         })
-          console.log(res.body);
-          const audio = await res.formData();
-          audio.play();
+    
+       
+        result = await res.json()
+        console.log(result)
+          // let audio = await res.blob();
+        
+          
           outPutAudio.innerHTML=`
             <audio controls>
-            <source src="${outPutAudio}" type="audio/wav">
+            <source src="audio" type="audio/wav">
             </audio>`
       });
   </script>

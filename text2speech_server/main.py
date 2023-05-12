@@ -1,5 +1,5 @@
 from fastapi import Depends, FastAPI, APIRouter, HTTPException, status, File, UploadFile, Request, Response
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
@@ -57,7 +57,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 app = FastAPI(debug=True)
 
 # ---------------------------- web page templates ---------------------------- #
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/recordings", StaticFiles(directory="recordings"), name="recordings")
 templates = Jinja2Templates(directory="templates")
 
 def verify_password(plain_password, hashed_password):
@@ -141,7 +141,11 @@ async def read_own_items(current_user:User = Depends(get_current_active_user)):
 async def read_item(request: Request):
     return templates.TemplateResponse("homepage.html", {"request": request})
 
-@app.post("/uploadFile")
+# @app.get("/audio")
+# async def upload_audio_file(audio_file: bytes = File(...)):
+#     return FileResponse(audio_file, media_type="audio/wav", filename="halle.wav")
+
+@app.post("/uploadFile/")
 async def upload_file(file: UploadFile):
     if not file:
         return {"message": "not file sent"}
@@ -149,10 +153,10 @@ async def upload_file(file: UploadFile):
     file_location = f"recordings/clip1.wav"
     with open(file_location, "wb+") as file_object:
         file_object.write(file.file.read())
-    answer_question(file_location)
-
+    # answer_question(file_location) // pass to 
     
-    return FileResponse("recordings/speaker_voice/halle.wav", media_type="audio/wav")
+    return JSONResponse({'filename': 'recordings\speaker_voice\halle.wav'})
+    # return FileResponse(audio_file, media_type="audio/wav", filename="halle.wav")
 # ----------------------------------- route ---------------------------------- #
 
 if __name__ == "__main__":

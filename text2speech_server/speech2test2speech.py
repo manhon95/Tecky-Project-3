@@ -3,6 +3,7 @@ import openai
 import sounddevice as sd
 import wavio as wv
 import os
+from env import GPT_KEY
 
 def answer_question(input_audio):
     try:
@@ -11,10 +12,10 @@ def answer_question(input_audio):
         num = 1
         # print('Recording')
 
-        # if not os.path.exists('Recordings'):
-        #     os.mkdir("recordings")
-        #     os.mkdir("recordings/output")
-        #     os.mkdir("recordings/speaker_voice")
+        if not os.path.exists('recordings'):
+            os.mkdir("recordings")
+            os.mkdir("recordings/output")
+            os.mkdir("recordings/speaker_voice")
         print("files_made")
         # while True:
         filename = f"clip{num}"
@@ -27,10 +28,9 @@ def answer_question(input_audio):
 
         # ------------------- Convert the NumPy array to audio file ------------------ #
         # wv.write(f"recordings/{filename}.wav", recording, freq, sampwidth=2)
-
-        openai.api_key = "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"
-
-        print("speech2text")
+        
+        openai.api_key = f'{GPT_KEY}'
+        
         audio_file = open(f"{input_audio}", "rb")
         transcript = openai.Audio.transcribe("whisper-1", audio_file)
 
