@@ -1,7 +1,3 @@
 .pyenv
-garbage_classification
 TTS
-node_modules
-__pycache__
-package-lock.json
 recordings/voices

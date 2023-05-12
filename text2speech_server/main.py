@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI, APIRouter, HTTPException, status, File, UploadFile
+from fastapi import Depends, FastAPI, APIRouter, HTTPException, status, File, UploadFile, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -11,14 +11,15 @@ from jose import JWTError
 import uvicorn
 import python_jwt as jwt
 import jwcrypto.jwk as jwk
+from speech2test2speech import answer_question
+import soundfile as sf
 
+import io
 
 
 SECRET_KEY =  jwk.JWK.generate(kty='RSA', size=2048)
 ALGORITHM = "PS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
-
-
 
 db = {
     "apple": {
@@ -55,6 +56,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 app = FastAPI(debug=True)
 
+# ---------------------------- web page templates ---------------------------- #
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
@@ -135,55 +137,39 @@ async def read_users_me(current_user: User = Depends(get_current_active_user)):
 async def read_own_items(current_user:User = Depends(get_current_active_user)):
     return [{"item_id": 1, "owner": current_user}]
 
-@app.get()
+@app.get("/homepage", response_class=HTMLResponse)
+async def read_item(request: Request):
+    return templates.TemplateResponse("homepage.html", {"request": request})
 
-@app.post("/uploadFile/", response_class=FileResponse)
-async def upload_file(file: UploadFile = File(...)):
+@app.post("/uploadFile")
+async def upload_file(file: UploadFile):
     if not file:
         return {"message": "not file sent"}
-    audioBack = "recordings\speaker_voice\halle.wav"
-    return audioBack
+    
+    file_location = f"recordings/clip1.wav"
+    with open(file_location, "wb+") as file_object:
+        file_object.write(file.file.read())
+    answer_question(file_location)
+
+    
+    return FileResponse("recordings/speaker_voice/halle.wav", media_type="audio/wav")
 # ----------------------------------- route ---------------------------------- #
-
-
-
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["*"],
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],    
-# )
-
-# @app.post('/login/')
-# async def root(user: User):
-#     response = requests.get('https://api.chatengine.io/users/me/', 
-#         headers={ 
-#             "Project-ID": PROJECT_ID,
-#             "User-Name": user.username,
-#             "User-Secret": user.secret
-#         }
-#     )
-#     return response.json()
-
-# @app.post('/signup/')
-# async def root(user: User):
-#     response = requests.post('https://api.chatengine.io/users/', 
-#         data={
-#             "username": user.username,
-#             "secret": user.secret,
-#             "email": user.email,
-#             "first_name": user.first_name,
-#             "last_name": user.last_name,
-#         },
-#         headers={ "Private-Key": PRIVATE_KEY }
-#     )
-#     return response.json()
-@app.get('/')
-async def home():
-    return "home"
-
-# app.include_router(router) 
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)
+
+# from typing import Annotated
+# import uvicorn
+
+# from fastapi import FastAPI, File, UploadFile
+
+# app = FastAPI()
+
+
+
+# @app.post("/uploadFile")
+# async def create_upload_file(file: UploadFile):
+#     return {"filename": file.filename}
+
+# if __name__ == "__main__":
+#     uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)

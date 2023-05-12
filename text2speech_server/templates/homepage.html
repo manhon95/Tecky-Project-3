@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form
+      id="uploadFile"
+      action="/upload-audio"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <input type="file" name="audio" accept="audio/*" />
+      <button type="submit">Upload Audio</button>
+    </form>
+
+    <button id="btnStart">start record</button>
+    <button id="btnStop">stop record</button>
+    <button id="submit">submit</button>
+    <div id="adioPlay"></div>
+    <div id="outPutAudio"></div>
+  </body>
+  <script>
+    let audioSrc;
+    let audioIN = { audio: true };
+
+    let audioData;
+    //  audio is true, for recording
+
+    // Access the permission for use
+    // the microphone
+    navigator.mediaDevices
+      .getUserMedia(audioIN)
+
+      // 'then()' method returns a Promise
+      .then(function (mediaStreamObj) {
+        let start = document.getElementById("btnStart");
+        let stop = document.getElementById("btnStop");
+        let playAudio = document.getElementById("adioPlay");
+        let outPutAudio = document.getElementById("outPutAudio")
+
+        // This is the main thing to recorded
+        // the audio 'MediaRecorder' API
+        let mediaRecorder = new MediaRecorder(mediaStreamObj);
+        // Pass the audio stream
+
+        // Start event
+        start.addEventListener("click", function (ev) {
+          mediaRecorder.start();
+          // console.log(mediaRecorder.state);
+        });
+
+        // Stop event
+        stop.addEventListener("click", function (ev) {
+          mediaRecorder.stop();
+          // console.log(mediaRecorder.state);
+        });
+
+        // If audio data available then push
+        // it to the chunk array
+        mediaRecorder.ondataavailable = function (ev) {
+          dataArray.push(ev.data);
+        };
+
+        // Chunk array to store the audio data
+        let dataArray = [];
+
+        // Convert the audio data in to blob
+        // after stopping the recording
+        mediaRecorder.onstop = function (ev) {
+          // blob of type mp3
+          audioData = new Blob(dataArray, { type: "audio/wav;" });
+
+          // After fill up the chunk
+          // array make it empty
+          dataArray = [];
+
+          // Creating audio url with reference
+          // of created blob named 'audioData'
+          audioSrc = window.URL.createObjectURL(audioData);
+
+          console.log(audioSrc);
+
+          // Pass the audio url to the 2nd video tag
+          playAudio.innerHTML = `
+          <audio controls>
+            <source src="${audioSrc}" type="audio/wav">
+          </audio>`
+          ;
+        };
+      })
+
+      // If any error occurs then handles the error
+      .catch(function (err) {
+        console.log(err.name, err.message);
+      });
+
+    // var blob = new Blob(audioSrc, { type: "audio/wav" });
+    
+    document
+    .querySelector("#submit")
+    .addEventListener("click", async function (event) {
+
+        let formData = new FormData();
+        formData.append("file", audioData);
+
+
+        // event.preventDefault();
+        const res = await fetch("/uploadFile", {
+          method: "POST",
+          body: formData,
+        })
+          console.log(res.body);
+          const audio = await res.formData();
+          audio.play();
+          outPutAudio.innerHTML=`
+            <audio controls>
+            <source src="${outPutAudio}" type="audio/wav">
+            </audio>`
+      });
+  </script>
+</html>
