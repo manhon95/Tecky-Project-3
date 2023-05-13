@@ -23,10 +23,12 @@ module.exports = {
       },
       to_time: {
         allowNull: false,
+        defaultValue: new Date(),
         type: Sequelize.DATE,
       },
       createdAt: {
         allowNull: false,
+        defaultValue: new Date(),
         type: Sequelize.DATE,
       },
       updatedAt: {

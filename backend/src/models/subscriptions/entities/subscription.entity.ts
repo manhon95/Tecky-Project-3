@@ -9,7 +9,7 @@ import {
 import { Plan } from 'src/models/plans/entities/plan.entity';
 import { User } from 'src/models/users/entities/user.entity';
 
-@Table
+@Table({ tableName: 'subscriptions' })
 export class Subscription extends Model {
   @Column({ primaryKey: true, autoIncrement: true })
   id: number;

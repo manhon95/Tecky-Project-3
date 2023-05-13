@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { CreateUserQuestionDto } from './dto/create-user_question.dto';
 import { UpdateUserQuestionDto } from './dto/update-user_question.dto';
 import { UserQuestion } from './entities/user_question.entity';
+import { Question } from '../questions/entities/question.entity';
 
 @Injectable()
 export class UsersQuestionsService {
@@ -17,6 +18,16 @@ export class UsersQuestionsService {
 
   findAll() {
     return `This action returns all usersQuestions`;
+  }
+
+  findAllByUser(user_id: number): Promise<UserQuestion[]> {
+    return this.userQuestionModel.findAll({
+      include: { model: Question, attributes: ['question'] },
+      attributes: ['answer'],
+      where: {
+        user_id,
+      },
+    });
   }
 
   findOne(id: number) {

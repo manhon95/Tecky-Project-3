@@ -14,13 +14,13 @@ import { Request } from 'src/models/requests/entities/request.entity';
 import { Subscription } from 'src/models/subscriptions/entities/subscription.entity';
 import { UserQuestion } from 'src/models/users_questions/entities/user_question.entity';
 
-@Table
+@Table({ tableName: 'users' })
 export class User extends Model {
   @Column({ primaryKey: true, autoIncrement: true })
   id: number;
 
   @Column({ unique: true })
-  username: string;
+  name: string;
 
   @Column
   password: string;
@@ -53,4 +53,7 @@ export class User extends Model {
 
   @BelongsToMany(() => Question, () => UserQuestion)
   questions: Question[];
+
+  @HasMany(() => UserQuestion)
+  userQuestions: UserQuestion[];
 }
