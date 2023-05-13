@@ -11,10 +11,26 @@ module.exports = {
         role: 'user',
         email: 'tecky@example.com',
       },
+      {
+        name: 'SteamDeck',
+        password: await bcrypt.hash('SteamDeck', 10),
+        role: 'user',
+        email: 'steamdeck@example.com',
+      },
+      {
+        name: 'PandaPro',
+        password: await bcrypt.hash('PandaPro', 10),
+        role: 'user',
+        email: 'pandapro@example.com',
+      },
     ]);
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('users', { name: 'Tecky' });
+    await queryInterface.bulkDelete(
+      'users',
+      { role: 'user' },
+      { restartIdentity: true },
+    );
   },
 };

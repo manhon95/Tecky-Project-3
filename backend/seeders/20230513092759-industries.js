@@ -7,10 +7,18 @@ module.exports = {
       {
         name: 'Education',
       },
+      {
+        name: 'Hardware',
+      },
+      {
+        name: 'Food',
+      },
     ]);
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('industries', null);
+    await queryInterface.bulkDelete('industries', null, {
+      restartIdentity: true,
+    });
   },
 };

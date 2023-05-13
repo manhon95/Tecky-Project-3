@@ -67,10 +67,257 @@ module.exports = {
           'Yes. We do offer trial lessons. Please contact us for more information.',
         enable: true,
       },
+      {
+        user_id: 3,
+        question_id: 10,
+        answer:
+          'Yes, and each account on a Steam Deck will keep its own local save data and settings.',
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 11,
+        answer: 'Yes, you can run non-Steam games through Proton.',
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 12,
+        answer:
+          "Yes, we'll support adding games like we do for the desktop Steam client.",
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 13,
+        answer:
+          'That is what we’re aiming for, though the rollout will happen in stages.',
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 14,
+        answer:
+          'Yes, these improvements will make it to all systems using Proton.',
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 15,
+        answer:
+          "Just like a PC, you'll need to be online to download games and play online multiplayer games. Once a game is installed on disk, you can play while Steam Deck is offline unless the game requires an internet connection.",
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 16,
+        answer:
+          'Steam Deck microSD cards use ext4 with casefolding - Steam Deck formats SD cards to the proper format.',
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 17,
+        answer:
+          'Yes, you can connect your Steam Deck to a PC via Remote Play and use it as a controller.',
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 18,
+        answer:
+          'While technically a PC VR headset can be connected, the Steam Deck is not optimized for PC VR experiences.',
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 19,
+        answer:
+          'No, docking is more akin to plugging a USB-C hub into a PC. Steam Deck runs at full performance in portable mode.',
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 20,
+        answer:
+          "All models have a glass screen (optically bonded IPS LCD). The 512 GB model's screen has an additional anti-glare etched treatment applied to it.",
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 21,
+        answer: 'The Steam Deck has dual LRA motors, one under each trackpad.',
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 22,
+        answer:
+          "Yep! We've collaborated with the folks at iFixit, and replacement parts and repair guides for Steam Deck can be found on their website.",
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 23,
+        answer:
+          "This is one of the most frequently asked questions we received, but the answer is a bit complicated so in this case we're answering with a video. Check it out here.",
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 24,
+        answer: 'Yes, CTIA standard layout.',
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 25,
+        answer: 'Yes, ten fingers.',
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 26,
+        answer: '1.5 meters, or 4.9 feet.',
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 27,
+        answer:
+          'Steam Deck is available directly via Steam in the US, Canada, UK, and EU. We are working with Komodo to sell Steam Deck in Japan, South Korea, Taiwan, and Hong Kong.',
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 28,
+        answer:
+          'Multi-boot is supported - you can have multiple OSes installed and choose which one to boot into. Users will have access to the BIOS menu.',
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 29,
+        answer: 'Yes, Steam Deck supports boot from microSD.',
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 30,
+        answer: 'No, external GPUs are not supported on Steam Deck.',
+        enable: true,
+      },
+      {
+        user_id: 3,
+        question_id: 31,
+        answer:
+          "No, once you've reserved a Steam Deck, the only way to change your model is to cancel and reserve again (this would put you at the end of the queue for your region).",
+        enable: true,
+      },
+      {
+        user_id: 4,
+        question_id: 32,
+        answer:
+          'pandapro is a monthly subscription membership that allows you to enjoy exclusive deals and benefits on restaurant, pick-up, grocery, and dine-in orders.',
+        enable: true,
+      },
+      {
+        user_id: 4,
+        question_id: 33,
+        answer:
+          'pro users enjoy exclusive discounts on food delivery as well as additional discounts on Pick-Up, groceries, and dine-in. For more details, click on "become a pandapro" tab right under your profile on the app or you can check out the benefits page here',
+        enable: true,
+      },
+      {
+        user_id: 4,
+        question_id: 34,
+        answer:
+          'You will be eligible to utilise your pandapro benefits once your order meets the minimum order amount specified in your plan.',
+        enable: true,
+      },
+      {
+        user_id: 4,
+        question_id: 35,
+        answer:
+          'You can cancel your subscription anytime. You will continue to receive benefits until the end of your subscription. Your cancellation request will take effect on the next renewal date. To cancel your subscription, please head to the app and proceed with the following steps. Open the sidebar menu -> Tap “Subscription" -> Tap “I would like to unsubscribe”',
+        enable: true,
+      },
+      {
+        user_id: 4,
+        question_id: 36,
+        answer:
+          "After you choose a pandapro plan and submit your payment information, you'll be billed the plan amount shown during subscription signup at the beginning of the plan. Your plan will automatically renew at the end of the subscription on the same date as your initial sign-up until you cancel it.",
+        enable: true,
+      },
+      {
+        user_id: 4,
+        question_id: 37,
+        answer:
+          'We will not make any refunds or prorated reimbursements for subscriptions. You can cancel your subscription anytime. You will continue to receive benefits until the end of your subscription. Your cancellation request will take effect on the next renewal date.',
+        enable: true,
+      },
+      {
+        user_id: 4,
+        question_id: 38,
+        answer:
+          'Yes! You can use other vouchers or promo codes in addition to your pandapro free delivery and Pick-Up discount benefits, as long as you are eligible per the minimum order amount stated in your plan.',
+        enable: true,
+      },
+      {
+        user_id: 4,
+        question_id: 39,
+        answer:
+          'You can subscribe through foodpanda app or foodpanda website. Simply click sidebar menu on the top right hand corner through app OR your profile icon through website, navigate to the “Become a pandapro” page, and subscribe to your preferred pandapro plan! Please note that all pandapro subscription related promotions are only applicable to foodpanda App',
+        enable: true,
+      },
+      {
+        user_id: 4,
+        question_id: 40,
+        answer:
+          'Free delivery benefits or vouchers used on a cancelled order will be reinstated within 15 minutes or so after your order is cancelled. You can reuse it after.',
+        enable: true,
+      },
+      {
+        user_id: 4,
+        question_id: 41,
+        answer:
+          'Yes, pandapro extra 5% off benefits is applicable to all Pick-up orders.',
+        enable: true,
+      },
+      {
+        user_id: 4,
+        question_id: 42,
+        answer:
+          'No minimum order value is needed for discount redemption. The redeemed offer is applicable on all à la carte/regular menu items except combo menus/special set menus. T&C restrictions apply.',
+        enable: true,
+      },
+      {
+        user_id: 4,
+        question_id: 43,
+        answer:
+          "Deals are applicable 7 days a week, except on the pre-listed dates such as New Year's Day, Chinese New Year, Valentine's Day, Good Friday, day after the Mid-autumn Festival, Silent Night, Christmas, New Year's Eve and such. Also note that the benefits cannot be combined with other ongoing offers/promotions by the restaurants.",
+        enable: true,
+      },
+      {
+        user_id: 4,
+        question_id: 44,
+        answer:
+          'All pandapro members could enjoy unlimited free delivery benefit.',
+        enable: true,
+      },
+      {
+        user_id: 4,
+        question_id: 45,
+        answer:
+          'You shall enjoy free delivery on orders $120 and above at restaurants (excl. delivery fee) and on orders $200 and above at mall & pandamart (excl, delivery fee) for the first 50 orders per month. After the first 50 free delivery orders, you will be able to use free delivery vouchers applicable on orders over HK$250 (after discount, excluding delivery fee) at restaurants, mall or pandamart.',
+        enable: true,
+      },
     ]);
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('users_questions', null);
+    await queryInterface.bulkDelete('users_questions', null, {
+      restartIdentity: true,
+    });
   },
 };
