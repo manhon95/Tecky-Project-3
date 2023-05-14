@@ -1,5 +1,5 @@
 from fastapi import Depends, FastAPI, APIRouter, HTTPException, status, File, UploadFile, Request, Response
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,7 +13,7 @@ import python_jwt as jwt
 import jwcrypto.jwk as jwk
 from speech2test2speech import answer_question
 import soundfile as sf
-
+import re
 import io
 
 
@@ -38,8 +38,11 @@ class TokenData(BaseModel):
     username: str or None = None
 
 class User(BaseModel):
+    userName: str
+    company: str
     email: str
     password: str
+    confirmPassword: str
 
 class UserInDB(BaseModel):
     username: str
@@ -59,6 +62,7 @@ app = FastAPI(debug=True)
 # ---------------------------- web page templates ---------------------------- #
 app.mount("/getAudio", StaticFiles(directory="recordings/output"), name="getAudio")
 app.mount("/login", StaticFiles(directory="templates"), name="login")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
@@ -147,16 +151,85 @@ async def read_own_items(current_user:User = Depends(get_current_active_user)):
 async def read_item(request: Request):
     return templates.TemplateResponse("homepage.html", {"request": request})
 
+@app.post("/login")
+async def login(request: Request):
+    return 
+
+
+@app.post("/register")
+async def register(user: User):
+    print(user)
+    checkStatus = True
+    userName = user.userName
+    company = user.company
+    email = user.email
+    password = user.password
+    confirmPassword = user.confirmPassword
+    emailFormat = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+
+    report = {}
+    
+
+  # ------------- check password and email formate when registering ------------ #
+    if len(password) < 8:
+        report["passwordLength-password"] = "Password must be 8 or more character*"
+        checkStatus = False
+    else:
+        report["passwordLength-password"] = ""
+        
+    
+
+    if password != confirmPassword:
+        report["pwCheck-password"] = "Confirm password is different*"
+        checkStatus = False
+    else:
+        report["pwCheck-password"] = ""
+    
+
+    if password == confirmPassword and len(password) > 7:
+        report["password"] = True
+    else:
+        report["password"] = False
+        checkStatus = False
+    
+
+    if re.match(emailFormat, email):
+        report["Format-email"] = ""
+        report["email"] = True
+    else:
+        report["Format-email"] = "invalid Email*"
+        checkStatus = False
+        report["email"] = False
+    
+
+    # if emailFromDB.rows[0] == undefined:
+    #     report["duplicate-email"] = ""
+    # else:
+    #     report["duplicate-email"] = "Email already used*"
+    #     checkStatus = False
+    
+
+    # if emailFromDB.rows[0] == undefined and re.match(email, emailFormat):
+    #     report["email"] = True
+    # else:
+    #     report["email"] = False
+    report["duplicate-email"] = ""
+   
+    if checkStatus == True:
+        report["success"] = "success"
+    return report
+
+
+
 @app.post("/uploadFile")
 async def upload_file(file: UploadFile):
     if not file:
         return {"message": "not file sent"}
-    
     # file_location = f"recordings/clip1.wav"
     # with open(file_location, "wb+") as file_object:
     #     file_object.write(file.file.read())
-        # answer_question(file_location)
-    return "getAudio/output.wav"
+    #     answer_question(file_location)
+    return {"message": "getAudio/output.wav"}
 
 # -------------------------------- init server ------------------------------- #
 if __name__ == "__main__":

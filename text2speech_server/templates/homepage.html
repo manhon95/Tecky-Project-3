@@ -5,9 +5,144 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/static/homepage.css" />
   </head>
   <body>
-    <form
+    <div id="titles">
+      <h1 id="companyHeader">companies</h1>
+      <h1 id="chatHeader">Chat Area</h1>
+    </div>
+
+    <nav id="navbar" class="navbar bg-body-tertiary d-none p-0">
+      <div class="container-fluid">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar"
+          aria-label="Toggle navigation"
+        >
+          <span class="" role="button"
+            ><i class="fa fa-bars" aria-hidden="true" style="color: #e6e6ff"></i
+          ></span>
+        </button>
+        <div
+          class="navbar-brand d-flex flex-grow-1 justify-content-center p-0 m-0"
+        >
+          <div class="navbarText">Chat Area</div>
+        </div>
+
+        <div
+          class="offcanvas offcanvas-start"
+          tabindex="-1"
+          id="offcanvasNavbar"
+          aria-labelledby="offcanvasNavbarLabel"
+        >
+          <div class="offcanvas-header">
+            <div class="offcanvas-title" id="offcanvasNavbarLabel">
+              Companies
+            </div>
+
+            <button
+              type="button"
+              class="btn closeButton"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            >
+              <i class="fa-regular fa-circle-xmark fs-3"></i>
+            </button>
+          </div>
+
+          <div class="offcanvas-body">
+            <ul
+              class="companySelectionNav navbar-nav justify-content-end flex-grow-1 pe-3"
+            >
+              <!-- ------------------ create company tab from template ------------------- -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div id="mainContainer">
+      <div id="companyContain">
+        <div class="companySelection"></div>
+      </div>
+
+      <div id="chatContainer">
+        <div class="d-flex fullWidth justify-content-center">
+          <div id="chatDisplay"></div>
+        </div>
+        <div id="buttonContainer">
+          <input
+            id="pressToTalk"
+            type="button"
+            class="btn btn-primary"
+            value="Press To Talk"
+          />
+          <input
+            id="pressToSubmit"
+            type="button"
+            class="btn btn-primary"
+            value="Submit"
+            hidden
+          />
+        </div>
+      </div>
+    </div>
+
+    <template id="questionAudio">
+      <div>
+        <audio controls>
+          <source src="" type="audio/wav" />
+        </audio>
+      </div>
+    </template>
+
+    <template id="answerAudio">
+      <div>
+        <audio controls>
+          <source src="" type="audio/wav" />
+        </audio>
+      </div>
+    </template>
+
+    <template id="companyTabsNav">
+      <li class="nav-item">
+        <div id="" class="companyButtons">
+          <img class="companyPic" src="" />
+          <div class="companyName"></div>
+        </div>
+      </li>
+    </template>
+
+    <template id="companyTabs">
+      <div id="" class="companyButtons">
+        <img class="companyPic" src="" />
+        <div class="companyName"></div>
+      </div>
+    </template>
+    <!-- <form
       id="uploadFile"
       action="/upload-audio"
       method="post"
@@ -15,90 +150,133 @@
     >
       <input type="file" name="audio" accept="audio/*" />
       <button type="submit">Upload Audio</button>
-    </form>
+    </form> -->
 
-    <button id="btnStart">start record</button>
+    <!-- <button id="btnStart">start record</button>
     <button id="btnStop">stop record</button>
     <button id="submit">submit</button>
     <div id="adioPlay"></div>
     <div id="outPutAudio"></div>
-    
- 
+    <button id="toLogin">toLogin</button> -->
   </body>
+
+  <!-- ----------------------------------------------------------------------- -->
+  <!--                                <script>                                 -->
+  <!-- ----------------------------------------------------------------------- -->
+
   <script>
     let audioSrc;
     let audioIN = { audio: true };
-
     let audioData;
-    //  audio is true, for recording
+    let pressToTalk = document.querySelector("#pressToTalk");
+    let pressToSubmit = document.querySelector("#pressToSubmit");
+    let chatDisplay = document.getElementById("chatDisplay");
+    let outPutAudio = document.getElementById("outPutAudio");
+    let companySelectionNav = document.querySelector(".companySelectionNav");
+    let companySelection = document.querySelector(".companySelection");
+    let companyTable = [
+      { name: "name1", pic: "static/companyPictures/exit.bmp" },
+      { name: "name2", pic: "static/companyPictures/default_profilePic.jpg" },
+      { name: "name3", pic: "static/compa"}
+    ];
 
-    // Access the permission for use
-    // the microphone
+    //<!-- ------------------------  make company tabs ------------------------- -->
+    
+    for (let key of companyTable) {
+      const template3 = document.querySelector("#companyTabsNav");
+      const clone3 = template3.content.cloneNode(true);
+      const companyButtons = clone3.querySelector(".companyButtons");
+      const companyPic = clone3.querySelector(".companyPic");
+      const companyName = clone3.querySelector(".companyName");
+      companyButtons.id = key.name;
+      companyPic.src = key.pic;
+      companyName.innerHTML = key.name;
+      companySelectionNav.appendChild(clone3);
+    }
+
+    for (let key of companyTable) {
+      const template3 = document.querySelector("#companyTabs");
+      const clone3 = template3.content.cloneNode(true);
+      const companyButtons = clone3.querySelector(".companyButtons");
+      const companyPic = clone3.querySelector(".companyPic");
+      const companyName = clone3.querySelector(".companyName");
+      companyButtons.id = key.name;
+      companyPic.src = key.pic;
+      companyName.innerHTML = key.name;
+      companySelection.appendChild(clone3);
+    }
+
+    // <!-- -------------------------- show selected tab --------------------------- -->
+    let companyButtons = document.querySelectorAll(".companyButtons");
+    for (let button of companyButtons) {
+      button.addEventListener("click", () => {
+        let selectTab = button.id;
+
+        for (let button of companyButtons) {
+          button.classList.remove("select");
+          if (button.id === selectTab) {
+            button.classList.add("select");
+          }
+        }
+        console.log(button.id);
+      });
+    }
+
+    // document.querySelector("#toLogin").addEventListener("click", () => {
+    //   location.href = "login/login.html";
+    // });
+
+// <!-- ---------------- record audio and post to server ----------------- -->
     navigator.mediaDevices
       .getUserMedia(audioIN)
-
-      // 'then()' method returns a Promise
       .then(function (mediaStreamObj) {
-        let start = document.getElementById("btnStart");
-        let stop = document.getElementById("btnStop");
-        let playAudio = document.getElementById("adioPlay");
-        let outPutAudio = document.getElementById("outPutAudio");
+        // 'then()' method returns a Promise
 
-        // This is the main thing to recorded
-        // the audio 'MediaRecorder' API
-        let mediaRecorder = new MediaRecorder(mediaStreamObj);
-        // Pass the audio stream
-
-        // Start event
-        start.addEventListener("click", function (ev) {
+        mediaRecorder = new MediaRecorder(mediaStreamObj);
+        pressToTalk.addEventListener("click", function (ev) {
+          console.log(mediaRecorder);
           mediaRecorder.start();
+          pressToTalk.setAttribute("hidden", "true");
+          pressToSubmit.removeAttribute("hidden");
         });
 
         // Stop event
-        stop.addEventListener("click", function (ev) {
+        pressToSubmit.addEventListener("click", async function (ev) {
           mediaRecorder.stop();
         });
 
-        mediaRecorder.ondataavailable = function (ev) {
-          dataArray.push(ev.data);
-        };
-
-        let dataArray = [];
-        mediaRecorder.onstop = function (ev) {
-          audioData = new Blob(dataArray, { type: "audio/wav" });
-
-          dataArray = [];
-
+        mediaRecorder.ondataavailable = async function (ev) {
+          audioData = new Blob([ev.data], { type: "audio/wav" });
           audioSrc = window.URL.createObjectURL(audioData);
 
-          playAudio.innerHTML = `
-          <audio controls>
-            <source src="${audioSrc}" type="audio/wav">
-          </audio>`;
+          const template1 = document.querySelector("#questionAudio");
+          const clone1 = template1.content.cloneNode(true);
+          const audioSource = clone1.querySelector("source");
+          audioSource.src = audioSrc;
+          chatDisplay.appendChild(clone1);
+
+          let formData = new FormData();
+          formData.append("file", audioData);
+
+          const res = await fetch("/uploadFile", {
+            method: "POST",
+            body: formData,
+          });
+          const result = await res.json();
+          console.log(result.message);
+
+          const template2 = document.querySelector("#answerAudio");
+          const clone2 = template2.content.cloneNode(true);
+          const audioSource2 = clone2.querySelector("source");
+          audioSource2.src = `${result.message}`;
+          chatDisplay.appendChild(clone2);
+
+          pressToSubmit.setAttribute("hidden", "true");
+          pressToTalk.removeAttribute("hidden");
         };
-      }).catch(function (err) {
+      })
+      .catch(function (err) {
         console.log(err.name, err.message);
-      });
-
-    document
-      .querySelector("#submit")
-      .addEventListener("click", async function (event) {
-        let formData = new FormData();
-        formData.append("file", audioData);
-
-        // event.preventDefault();
-        const res = await fetch("/uploadFile", {
-          method: "POST",
-          body: formData,
-        });
-
-        result = await res.json();
-        console.log(result);
-
-        outPutAudio.innerHTML = `
-            <audio controls>
-            <source src="${result}" type="audio/wav">
-            </audio>`;
       });
   </script>
 </html>

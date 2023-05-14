@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/static/homepage.css" />
+  </head>
+  <body>
+    <div id="titles">
+      <h1 id="companyHeader">companies</h1>
+      <h1 id="chatHeader">Chat Area</h1>
+    </div>
+
+    <div id="mainContainer">
+      <div id="companyContain">
+        <div id="companySelection">
+          <div id="name1" class="companyButtons">
+            <img
+              class="companyPic"
+              src="static/companyPictures/exit.bmp"
+              alt=""
+            />
+            <div class="companyName">name</div>
+          </div>
+          <div id="name2" class="companyButtons">
+            <img
+              class="companyPic"
+              src="static/companyPictures/default_profilePic.jpg"
+              alt=""
+            />
+            <div class="companyName">name</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="chatContainer">
+        <div></div>
+        <div class="d-flex fullWidth justify-content-center">
+          <div id="chatDisplay">sdsa</div>
+        </div>
+        <div class="d-flex fullWidth justify-content-center">
+          <input
+            id="pressToTalk"
+            type="button"
+            class="btn btn-primary"
+            value="Press To Talk"
+          />
+          <input
+            id="pressToSubmit"
+            type="button"
+            class="btn btn-primary"
+            value="Submit"
+          />
+        </div>
+      </div>
+    </div>
+
+    <template>
+      <div id="companyTemplate"></div>
+    </template>
+
+    <!-- <form
+      id="uploadFile"
+      action="/upload-audio"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <input type="file" name="audio" accept="audio/*" />
+      <button type="submit">Upload Audio</button>
+    </form> -->
+
+    <button id="btnStart">start record</button>
+    <button id="btnStop">stop record</button>
+    <button id="submit">submit</button>
+    <div id="adioPlay"></div>
+    <div id="outPutAudio"></div>
+    <button id="toLogin">toLogin</button>
+  </body>
+
+  <!-- ----------------------------------------------------------------------- -->
+  <!--                                <script>                                 -->
+  <!-- ----------------------------------------------------------------------- -->
+
+  <script>
+    let audioSrc;
+    let audioIN = { audio: true };
+    let audioData;
+    let companyTable = ["name1", "name2"];
+
+    let companyButtons = document.querySelectorAll(".companyButtons");
+    for (let button of companyButtons) {
+      button.addEventListener("click", () => {
+        for (let name of companyTable) {
+          if (button.id === name) {
+            button.classList.add("select");
+          } else {
+            document.getElementById(name).classList.remove("select");
+          }
+        }
+      });
+    }
+
+    document.querySelector("#toLogin").addEventListener("click", () => {
+      location.href = "login/login.html";
+    });
+
+    //  audio is true, for recording
+
+    // Access the permission for use
+    // the microphone
+
+    navigator.mediaDevices
+      .getUserMedia(audioIN)
+      .then(function (mediaStreamObj) {
+        // 'then()' method returns a Promise
+
+        let pressToTalk = document.querySelector("#pressToTalk");
+        let pressToSubmit = document.querySelector("#pressToSubmit");
+        let playAudio = document.getElementById("adioPlay");
+        let outPutAudio = document.getElementById("outPutAudio");
+
+        mediaRecorder = new MediaRecorder(mediaStreamObj);
+        pressToTalk.addEventListener("click", function (ev) {
+          console.log(mediaRecorder);
+          mediaRecorder.start();
+          pressToTalk.setAttribute("hidden", "true");
+          pressToSubmit.removeAttribute("hidden");
+        });
+
+        // Stop event
+        pressToSubmit.addEventListener("click", async function (ev) {
+          mediaRecorder.stop();
+        });
+
+        mediaRecorder.ondataavailable = async function (ev) {
+          audioData = new Blob([ev.data], { type: "audio/wav" });
+          audioSrc = window.URL.createObjectURL(audioData);
+          playAudio.innerHTML = `
+            <audio controls>
+              <source src="${audioSrc}" type="audio/wav">
+            </audio>`;
+          let formData = new FormData();
+          formData.append("file", audioData);
+          const res = await fetch("/uploadFile", {
+            method: "POST",
+            body: formData,
+          });
+          const result = await res.json();
+          console.log(result.message);
+
+          outPutAudio.innerHTML = `
+            <audio controls>
+            <source src="${result.message}" type="audio/wav">
+            </audio>`;
+
+          pressToSubmit.setAttribute("hidden", "true");
+          pressToTalk.removeAttribute("hidden");
+        };
+      })
+      .catch(function (err) {
+        console.log(err.name, err.message);
+      });
+  </script>
+</html>
