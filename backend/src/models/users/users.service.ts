@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/sequelize';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { Op } from 'sequelize';
+import { Question } from '../questions/entities/question.entity';
 
 @Injectable()
 export class UsersService {
@@ -11,7 +13,7 @@ export class UsersService {
     private userModel: typeof User,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  create(createUserDto: CreateUserDto) {
     return this.userModel.create({
       username: createUserDto.username,
       password: createUserDto.password,
@@ -19,12 +21,22 @@ export class UsersService {
     });
   }
 
-  async findAll(): Promise<User[]> {
+  findAll(): Promise<User[]> {
     return this.userModel.findAll();
   }
 
-  async findOne(id: number): Promise<User> {
+  findAllUsers(): Promise<User[]> {
+    return this.userModel.findAll({
+      attributes: ['id', 'name'],
+      where: {
+        role: 'user',
+      },
+    });
+  }
+
+  findOne(id: number): Promise<User> {
     return this.userModel.findOne({
+      attributes: ['id', 'name'],
       where: {
         id,
       },

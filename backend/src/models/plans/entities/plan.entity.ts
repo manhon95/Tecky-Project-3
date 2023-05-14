@@ -1,7 +1,7 @@
 import { Column, HasMany, Model, Table } from 'sequelize-typescript';
 import { Subscription } from 'src/models/subscriptions/entities/subscription.entity';
 
-@Table
+@Table({ tableName: 'plans' })
 export class Plan extends Model {
   @Column({ primaryKey: true, autoIncrement: true })
   id: number;

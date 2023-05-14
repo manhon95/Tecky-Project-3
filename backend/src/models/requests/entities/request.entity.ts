@@ -7,7 +7,7 @@ import {
 } from 'sequelize-typescript';
 import { User } from 'src/models/users/entities/user.entity';
 
-@Table
+@Table({ tableName: 'requests' })
 export class Request extends Model {
   @Column({ primaryKey: true, autoIncrement: true })
   id: number;

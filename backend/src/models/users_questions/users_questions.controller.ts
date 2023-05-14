@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { UsersQuestionsService } from './users_questions.service';
 import { CreateUserQuestionDto } from './dto/create-user_question.dto';
@@ -21,13 +22,8 @@ export class UsersQuestionsController {
   }
 
   @Get()
-  findAll() {
-    return this.usersQuestionsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersQuestionsService.findOne(+id);
+  findAllByUser(@Query('user-id') user_id: string) {
+    return this.usersQuestionsService.findAllByUser(+user_id);
   }
 
   @Patch(':id')

@@ -26,7 +26,7 @@ module.exports = {
         },
       },
       answer: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1023),
       },
       enable: {
         allowNull: false,
@@ -35,10 +35,12 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
+        defaultValue: new Date(),
         type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
+        defaultValue: new Date(),
         type: Sequelize.DATE,
       },
     });
