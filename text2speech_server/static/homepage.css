@@ -58,14 +58,13 @@ background-color: var(--BG-colour);
 .companyButtons{
  width: 100%;
  height: fit-content;
- border: solid 1px whitesmoke;
+ border: solid 1px #5d5d5d;
  display: flex;
  align-items: center;
  font-size: 25px;
  color: white;
 }
 .companyPic{
-    border: solid 1px white;
     border-radius: 100%;
     height: 50px;
     width: 50px;

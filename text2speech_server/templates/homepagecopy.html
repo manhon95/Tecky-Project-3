@@ -167,11 +167,11 @@
             body: formData,
           });
           const result = await res.json();
-          console.log(result.message);
+          console.log(result);
 
           outPutAudio.innerHTML = `
             <audio controls>
-            <source src="${result.message}" type="audio/wav">
+            <source src="${result.message.message}" type="audio/wav">
             </audio>`;
 
           pressToSubmit.setAttribute("hidden", "true");

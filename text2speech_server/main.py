@@ -223,14 +223,17 @@ async def register(user: User):
 
 @app.post("/uploadFile")
 async def upload_file(file: UploadFile):
+    print("here")
     if not file:
         return {"message": "not file sent"}
-    # file_location = f"recordings/clip1.wav"
-    # with open(file_location, "wb+") as file_object:
-    #     file_object.write(file.file.read())
-    #     answer_question(file_location)
-    return {"message": "getAudio/output.wav"}
-
+    file_location = f"recordings/clip1.wav"
+    with open(file_location, "wb+") as file_object:
+        file_object.write(file.file.read())
+        text = answer_question(file_location)
+   
+    response = {"message": "getAudio/output.wav", "inputMessage": text["input"],"outputMessage": text["output"]}
+    print(response)
+    return response
 # -------------------------------- init server ------------------------------- #
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)
