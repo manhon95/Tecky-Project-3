@@ -179,6 +179,7 @@
       { name: "SteamDeck", pic: "static/companyPictures/steam_icon.png" },
       { name: "PandaPro", pic: "static/companyPictures/foodPanda_icon.png"}
     ];
+    let company_question = ""
 
     //<!-- ------------------------  make company tabs ------------------------- -->
     
@@ -216,9 +217,18 @@
           button.classList.remove("select");
           if (button.id === selectTab) {
             button.classList.add("select");
+          
+          for(let array in companyTable){
+            // console.log(companyTable[array].name)
+            if(companyTable[array].name == button.id){
+              company_question = Number(array) + 2
+              console.log(company_question)
+            }
+          }
           }
         }
-        console.log(button.id);
+
+        ;
       });
     }
 
@@ -257,11 +267,13 @@
 
           let formData = new FormData();
           formData.append("file", audioData);
-
+          formData.append("company_question", String(company_question));
+     
           const res = await fetch("/uploadFile", {
             method: "POST",
             body: formData,
           });
+
           const result = await res.json();
           console.log(result.message);
 

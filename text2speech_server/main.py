@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI, APIRouter, HTTPException, status, File, UploadFile, Request, Response
+from fastapi import Depends, FastAPI, APIRouter, HTTPException, status, File, UploadFile, Request, Response, Form
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -15,6 +15,7 @@ from speech2test2speech import answer_question
 import soundfile as sf
 import re
 import io
+from typing import Annotated
 
 
 SECRET_KEY =  jwk.JWK.generate(kty='RSA', size=2048)
@@ -222,18 +223,30 @@ async def register(user: User):
 
 
 @app.post("/uploadFile")
-async def upload_file(file: UploadFile):
-    print("here")
-    if not file:
-        return {"message": "not file sent"}
-    file_location = f"recordings/clip1.wav"
-    with open(file_location, "wb+") as file_object:
-        file_object.write(file.file.read())
-        text = answer_question(file_location)
-   
-    response = {"message": "getAudio/output.wav", "inputMessage": text["input"],"outputMessage": text["output"]}
-    print(response)
-    return response
+async def upload_file(company_question: str = Form(), file: UploadFile = File()):
+    print(company_question)
+    print(file)
+
+    try:
+        if not file:
+            return {"message": "not file sent"}
+        
+        file_location = f"recordings/clip1.wav"
+
+        with open(file_location, "wb+") as file_object:
+            file_object.write(file.file.read())
+
+        text = answer_question(file_location, company_question)
+      
+    
+        response = {"message": "getAudio/output.wav", "inputMessage": text["input"],"outputMessage": text["output"]}
+        print(response)
+        return response
+    
+    except Exception as e:
+        print(e)
+        return { "status" : False }
+    
 # -------------------------------- init server ------------------------------- #
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)
