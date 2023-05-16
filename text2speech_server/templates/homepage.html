@@ -24,8 +24,7 @@
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="/static/homepage.css" />
-  </head>
+    <link href="{{ url_for('static', path='/homepage.css') }}" rel="stylesheet">  </head>
   <body>
     <div id="titles">
       <h1 id="companyHeader">companies</h1>
@@ -112,7 +111,7 @@
     </div>
 
     <template id="questionAudio">
-      <div>
+      <div class="d-flex justify-content-end">
         <audio controls>
           <source src="" type="audio/wav" />
         </audio>
@@ -120,12 +119,25 @@
     </template>
 
     <template id="answerAudio">
-      <div>
+      <div >
         <audio controls>
           <source src="" type="audio/wav" />
         </audio>
       </div>
     </template>
+
+    <template id="answerText">
+      <div class="answerText">
+       <p></p>
+      </div>
+    </template>
+
+    <template id="questionText">
+      <div class="d-flex justify-content-end questionText">
+        <p></p>
+      </div>
+    </template>
+
 
     <template id="companyTabsNav">
       <li class="nav-item">
@@ -275,7 +287,19 @@
           });
 
           const result = await res.json();
-          console.log(result.message);
+          console.log(result);
+
+          const template3 = document.querySelector("#questionText");
+          const clone3 = template3.content.cloneNode(true);
+          const questionText = clone3.querySelector("p");
+          questionText.innerHTML = `${result.inputMessage}`;
+          chatDisplay.appendChild(clone3);
+          
+          const template4 = document.querySelector("#answerText");
+          const clone4 = template4.content.cloneNode(true);
+          const answerText = clone4.querySelector("p");
+          answerText.innerHTML = `${result.outputMessage}`;
+          chatDisplay.appendChild(clone4);
 
           const template2 = document.querySelector("#answerAudio");
           const clone2 = template2.content.cloneNode(true);

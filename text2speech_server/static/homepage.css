@@ -43,7 +43,6 @@
 #mainContainer{
 height: calc(100vh - 55px);
 display: flex;
-background-color: var(--BG-colour);
 }
 
 /* ------------------------------- bottom left ------------------------------ */
@@ -74,17 +73,35 @@ background-color: var(--BG-colour);
 /* ------------------------------ bottom right ------------------------------ */
 
 #chatContainer{
-    background-color: var(--BG-colour);
     width: calc(100% - 250px);
     position: relative;
+    background:  var(--BG-colour);
 }
 
 #chatDisplay{
     margin-bottom: 0;
     min-width: 800px;
-    background-color: aqua;
     height: calc(100vh - 120px);
 
+}
+
+.questionText{
+    margin: 10px 0 10px 100px;
+    border-radius: 20px;
+    background: #2b2b2b;
+    color: #fff;
+    font-size: 15px;
+    padding: 10px;
+    
+}
+
+.answerText{
+    margin: 10px 100px 10px 0;
+    border-radius: 20px;
+    color: #fff;
+    background: #2b2b2b;
+    font-size: 15px;
+    padding: 10px;
 
 }
 
@@ -110,7 +127,6 @@ background-color: var(--BG-colour);
         width: 100%;
         margin: 0 40px;
         min-width: 0px;
-        background-color: aqua;
         height: calc(100vh - 120px);
     }
 
