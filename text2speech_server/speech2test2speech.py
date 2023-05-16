@@ -23,7 +23,7 @@ def wav_to_flac(wav_path):
 
 def answer_question(input_audio, company_question):
     print("get question:", company_question)
-    x = requests.get(f"http://13.237.77.71/users-questions?user-id={company_question}", headers={'Accept': 'application/json'})
+    x = requests.get(f"http://localhost:3000/users-questions?user-id={company_question}", headers={'Accept': 'application/json'})
     print(f"Response: {x.json()}")
 
     try:
@@ -102,7 +102,7 @@ def answer_question(input_audio, company_question):
         tts = TTS(model_name)
 
         tts = TTS(model_name="tts_models/multilingual/multi-dataset/your_tts", progress_bar=True, gpu=False)
-        tts.tts_to_file(f"{response.choices[0].message.content}", speaker_wav="recordings\speaker_voice\halle.wav", language="en", file_path="recordings/output/output.wav")
+        tts.tts_to_file(f"{response.choices[0].message.content}", speaker_wav="recordings/speaker_voice/3.wav", language="en", file_path="recordings/output/output.wav")
         print("save")
 
         text = {"message": "getAudio/output.wav","input": transcript.text, "output": response.choices[0].message.content}
