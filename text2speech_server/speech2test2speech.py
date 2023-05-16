@@ -47,66 +47,66 @@ def answer_question(input_audio, company_question):
         # sd.wait()
         # wv.write(f"recordings/{filename}.wav", recording, freq, sampwidth=2)
 
-        wav_to_flac(input_audio)
+        # wav_to_flac(input_audio)
 
-        client_file = "googleKey.json"
-        key = service_account.Credentials.from_service_account_file(client_file)
-        client = speech.SpeechClient(credentials=key)   
-        # print("input_audio", input_audio)
-        audio_file = "recordings/clip1.flac"
+        # client_file = "googleKey.json"
+        # key = service_account.Credentials.from_service_account_file(client_file)
+        # client = speech.SpeechClient(credentials=key)   
+        # # print("input_audio", input_audio)
+        # audio_file = "recordings/clip1.flac"
 
-        content = None
-        with io.open(audio_file, 'rb') as f:
-            content = f.read()
-        audio = speech.RecognitionAudio(content=content)
-        config = speech.RecognitionConfig(
-            # encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-            # sample_rate_hertz=48000,
-            # language_code="en-US",
+        # content = None
+        # with io.open(audio_file, 'rb') as f:
+        #     content = f.read()
+        # audio = speech.RecognitionAudio(content=content)
+        # config = speech.RecognitionConfig(
+        #     # encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+        #     # sample_rate_hertz=48000,
+        #     # language_code="en-US",
 
-            encoding=speech.RecognitionConfig.AudioEncoding.FLAC,
-            sample_rate_hertz=48000,
-            language_code="en-US",
-        )
+        #     encoding=speech.RecognitionConfig.AudioEncoding.FLAC,
+        #     sample_rate_hertz=48000,
+        #     language_code="en-US",
+        # )
 
-        response = client.recognize(config=config, audio=audio)
+        # response = client.recognize(config=config, audio=audio)
         # print("responser", response)
 
         # Each result is for a consecutive portion of the audio. Iterate through
         # them to get the transcripts for the entire audio file.
-        for data in response.results:
-            transcriptText = data.alternatives[0].transcript
+        # for data in response.results:
+        #     transcriptText = data.alternatives[0].transcript
             # print(data.alternatives[0].transcript)
 
-            openai.api_key = f'{GPT_KEY}'
-            
-            # audio_file = open(f"{input_audio}", "rb")
-            # transcript = openai.Audio.transcribe("whisper-1", audio_file)
-            # print(transcript.text)
-            
-            response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                        {"role": "user","content": f"base on these Q and A {x.json()}, only give the answer for the following question: {transcriptText}"}
-                ]
-            )
+        openai.api_key = f'{GPT_KEY}'
+        
+        audio_file = open(f"{input_audio}", "rb")
+        transcript = openai.Audio.transcribe("whisper-1", audio_file)
+        print(transcript.text)
+        
+        response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+                    {"role": "user","content": f"base on these Q and A {x.json()}, only give the answer for the following question: {transcript.text}"}
+            ]
+        )
 
-            print("chatGPT responds: ",response.choices[0].message.content)
+        print("chatGPT responds: ",response.choices[0].message.content)
 
 
-            # f = open("speech.txt", "w+", encoding='utf-8-sig') 
-            # f.write(response.choices[0].message)
+        # f = open("speech.txt", "w+", encoding='utf-8-sig') 
+        # f.write(response.choices[0].message)
 
-            model_name = TTS.list_models()[7]
+        model_name = TTS.list_models()[7]
 
-            tts = TTS(model_name)
+        tts = TTS(model_name)
 
-            tts = TTS(model_name="tts_models/multilingual/multi-dataset/your_tts", progress_bar=True, gpu=False)
-            tts.tts_to_file(f"{response.choices[0].message.content}", speaker_wav="recordings\speaker_voice\halle.wav", language="en", file_path="recordings/output/output.wav")
-            print("save")
+        tts = TTS(model_name="tts_models/multilingual/multi-dataset/your_tts", progress_bar=True, gpu=False)
+        tts.tts_to_file(f"{response.choices[0].message.content}", speaker_wav="recordings\speaker_voice\halle.wav", language="en", file_path="recordings/output/output.wav")
+        print("save")
 
-            text = {"message": "getAudio/output.wav","input": transcriptText, "output": response.choices[0].message.content}
-            return text
+        text = {"message": "getAudio/output.wav","input": transcript.text, "output": response.choices[0].message.content}
+        return text
     
         # text = {"input": transcript.text, "output": response.choices[0].message.content}
         # return text
