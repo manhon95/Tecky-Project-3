@@ -44,7 +44,7 @@ export class UsersService {
 
   findOneByEmail(email: string): Promise<User> {
     return this.userModel.findOne({
-      attributes: ['email', 'name'],
+      attributes: ['id', 'name', 'password', 'email'],
       where: {
         email,
       },
