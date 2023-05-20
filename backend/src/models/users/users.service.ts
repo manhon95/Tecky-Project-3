@@ -3,8 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { Op } from 'sequelize';
-import { Question } from '../questions/entities/question.entity';
+import bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -13,10 +12,10 @@ export class UsersService {
     private userModel: typeof User,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     return this.userModel.create({
       username: createUserDto.username,
-      password: createUserDto.password,
+      password: await bcrypt.hash(createUserDto.password, 10),
       email: createUserDto.email,
     });
   }
@@ -39,6 +38,15 @@ export class UsersService {
       attributes: ['id', 'name'],
       where: {
         id,
+      },
+    });
+  }
+
+  findOneByEmail(email: string): Promise<User> {
+    return this.userModel.findOne({
+      attributes: ['email', 'name'],
+      where: {
+        email,
       },
     });
   }

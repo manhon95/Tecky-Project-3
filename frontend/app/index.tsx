@@ -1,22 +1,26 @@
 import * as React from "react";
+import { useForm, Controller } from "react-hook-form";
 import {
   NativeBaseProvider,
   Avatar,
   Button,
   Icon,
   Input,
-  Container,
   Text,
   Link,
   Box,
   Heading,
-  Checkbox,
   FormControl,
   Center,
   VStack,
   HStack,
 } from "native-base";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+
+type FormData = {
+  email: string;
+  password: string;
+};
 
 function Copyright(props: any) {
   return (
@@ -32,13 +36,24 @@ function Copyright(props: any) {
 }
 
 export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormData>();
+
+  const onSubmit = (data: FormData) => {
+    console.log(data.email, data.password);
+    fetch("https://mywebsite.com/endpoint/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     });
+    reset();
   };
 
   return (
@@ -61,13 +76,58 @@ export default function SignIn() {
           </Avatar>
           <Heading size="md">Sign in</Heading>
           <VStack space={3} mt="5" w="100%">
-            <FormControl>
+            <FormControl isRequired isInvalid={"email" in errors}>
               <FormControl.Label>Email ID</FormControl.Label>
-              <Input />
+              <Controller
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    id="email"
+                    onBlur={field.onBlur}
+                    onChangeText={(val) => field.onChange(val)}
+                    value={field.value}
+                  />
+                )}
+                name="email"
+                rules={{
+                  required: "Field is required",
+                  pattern: {
+                    value: /\S+@\S+\.\S+/,
+                    message: "Invalid Email Address",
+                  },
+                }}
+                defaultValue=""
+              />
+              <FormControl.ErrorMessage>
+                {errors.email?.message}
+              </FormControl.ErrorMessage>
             </FormControl>
-            <FormControl>
+            <FormControl isRequired isInvalid={"password" in errors}>
               <FormControl.Label>Password</FormControl.Label>
-              <Input type="password" />
+              <Controller
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    id="password"
+                    onBlur={field.onBlur}
+                    onChangeText={(val) => field.onChange(val)}
+                    value={field.value}
+                    type="password"
+                  />
+                )}
+                name="password"
+                rules={{
+                  required: "Field is required",
+                  minLength: {
+                    value: 8,
+                    message: "Password must have at least 8 characters",
+                  },
+                }}
+                defaultValue=""
+              />
+              <FormControl.ErrorMessage>
+                {errors.password?.message}
+              </FormControl.ErrorMessage>
               <Link
                 _text={{
                   fontSize: "xs",
@@ -80,7 +140,11 @@ export default function SignIn() {
                 Forget Password?
               </Link>
             </FormControl>
-            <Button mt="2" colorScheme="indigo">
+            <Button
+              mt="2"
+              colorScheme="indigo"
+              onPress={handleSubmit(onSubmit)}
+            >
               Sign in
             </Button>
             <HStack mt="6" justifyContent="center">

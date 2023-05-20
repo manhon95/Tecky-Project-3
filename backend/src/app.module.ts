@@ -17,6 +17,7 @@ import { PlansModule } from './models/plans/plans.module';
 import { QuestionsModule } from './models/questions/questions.module';
 import { UsersQuestionsModule } from './models/users_questions/users_questions.module';
 import { SubscriptionsModule } from './models/subscriptions/subscriptions.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { SubscriptionsModule } from './models/subscriptions/subscriptions.module
     QuestionsModule,
     UsersQuestionsModule,
     SubscriptionsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
