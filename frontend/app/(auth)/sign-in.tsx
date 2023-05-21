@@ -48,7 +48,6 @@ export default function SignIn() {
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
-    console.log(data.email, data.password);
     const res = await fetch(BackendAPI.signIn, {
       method: "POST",
       headers: {
@@ -59,7 +58,7 @@ export default function SignIn() {
     });
     const result = await res.json();
     console.log(result);
-    signIn(result.access_token);
+    if (result.access_token) signIn(result.access_token);
     reset();
   };
 
@@ -69,7 +68,7 @@ export default function SignIn() {
         <Box
           w="90%"
           maxW="290"
-          mt={8}
+          mt={40}
           display={"flex"}
           flexDirection={"column"}
           alignItems={"center"}
