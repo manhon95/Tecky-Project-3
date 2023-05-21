@@ -1,5 +1,4 @@
 export default {
-  createUser: "http://13.237.77.71/user",
-  login: "http://13.237.77.71/login",
-  logout: "http://13.237.77.71/logout",
+  createUser: "http://13.237.77.71/users",
+  signIn: "http://13.237.77.71/auth/login",
 };
