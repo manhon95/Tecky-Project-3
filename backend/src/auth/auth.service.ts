@@ -19,7 +19,7 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException();
     }
-    if (await bcrypt.compare(pass, user.password)) {
+    if (!(await bcrypt.compare(pass, user.password))) {
       throw new UnauthorizedException();
     }
     const payload = { email: user.email, sub: user.id };

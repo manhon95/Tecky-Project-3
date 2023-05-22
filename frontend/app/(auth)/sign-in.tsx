@@ -125,7 +125,7 @@ export default function SignIn() {
                 rules={{
                   required: "Field is required",
                   minLength: {
-                    value: 1,
+                    value: 8,
                     message: "Password must have at least 8 characters",
                   },
                 }}
