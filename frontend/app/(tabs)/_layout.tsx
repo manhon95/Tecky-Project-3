@@ -41,9 +41,16 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="setup"
         options={{
-          title: "Tab Two",
+          title: "Setup",
+          tabBarIcon: () => <TabBarIcon name="code" />,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
           tabBarIcon: () => <TabBarIcon name="code" />,
         }}
       />

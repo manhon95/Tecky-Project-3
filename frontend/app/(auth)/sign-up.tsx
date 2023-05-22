@@ -2,42 +2,43 @@ import * as React from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
   NativeBaseProvider,
-  Avatar,
   Button,
-  Icon,
   Input,
   Text,
+  Link,
   Box,
   Heading,
   FormControl,
   Center,
   VStack,
-  HStack,
   KeyboardAvoidingView,
+  View,
 } from "native-base";
-import { Link } from "expo-router";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import BackendAPI from "../../constants/BackendAPI";
 import { useAuth } from "../../context/auth";
 import { Platform } from "react-native";
 
 type FormData = {
+  username: string;
   email: string;
   password: string;
+  confirmPassword: string;
 };
 
 function Copyright(props: any) {
   return (
     <Text alignItems="center" mt={8} mb={4}>
       {"Copyright © "}
-      <Link href="https://nativebase.io">Your Website</Link>{" "}
+      <Link color="inherit" href="https://nativebase.io">
+        Your Website
+      </Link>{" "}
       {new Date().getFullYear()}
       {"."}
     </Text>
   );
 }
 
-export default function SignIn() {
+export default function SignUp() {
   const { signIn } = useAuth();
 
   const {
@@ -45,10 +46,11 @@ export default function SignIn() {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
-    const res = await fetch(BackendAPI.signIn, {
+    const res = await fetch(BackendAPI.signUp, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -64,27 +66,39 @@ export default function SignIn() {
   return (
     <NativeBaseProvider>
       <KeyboardAvoidingView
+        h={{
+          base: "400px",
+          lg: "auto",
+        }}
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <Center>
-          <Box
-            w="90%"
-            maxW="290"
-            mt={40}
-            display={"flex"}
-            flexDirection={"column"}
-            alignItems={"center"}
-          >
-            <Avatar>
-              <Icon
-                textAlign="center"
-                as={<FontAwesome name="lock" />}
-                size={5}
-              />
-            </Avatar>
-            <Heading size="md">Sign in</Heading>
-            <VStack space={3} mt="5" w="100%">
+        <Center flex={1} justifyContent="flex-end" w="100%">
+          <Box safeArea mt={16} p="2" w="90%" maxW="290">
+            <Heading
+              size="lg"
+              color="coolGray.800"
+              _dark={{
+                color: "warmGray.50",
+              }}
+              fontWeight="semibold"
+              textAlign={"center"}
+            >
+              Welcome
+            </Heading>
+            <Heading
+              mt="1"
+              color="coolGray.600"
+              _dark={{
+                color: "warmGray.200",
+              }}
+              fontWeight="medium"
+              size="xs"
+              textAlign={"center"}
+            >
+              Sign up to continue!
+            </Heading>
+            <VStack space={3} mt="5">
               <FormControl isRequired isInvalid={"email" in errors}>
                 <FormControl.Label>Email ID</FormControl.Label>
                 <Controller
@@ -109,6 +123,28 @@ export default function SignIn() {
                 />
                 <FormControl.ErrorMessage>
                   {errors.email?.message}
+                </FormControl.ErrorMessage>
+              </FormControl>
+              <FormControl isRequired isInvalid={"username" in errors}>
+                <FormControl.Label>Company Name</FormControl.Label>
+                <Controller
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      id="username"
+                      onBlur={field.onBlur}
+                      onChangeText={(val) => field.onChange(val)}
+                      value={field.value}
+                    />
+                  )}
+                  name="username"
+                  rules={{
+                    required: "Field is required",
+                  }}
+                  defaultValue=""
+                />
+                <FormControl.ErrorMessage>
+                  {errors.password?.message}
                 </FormControl.ErrorMessage>
               </FormControl>
               <FormControl isRequired isInvalid={"password" in errors}>
@@ -137,42 +173,50 @@ export default function SignIn() {
                 <FormControl.ErrorMessage>
                   {errors.password?.message}
                 </FormControl.ErrorMessage>
-                <Text
-                  fontSize="xs"
-                  fontWeight="500"
-                  color="indigo.500"
-                  alignSelf="flex-end"
-                  mt="1"
-                >
-                  Forget Password?
-                </Text>
+              </FormControl>
+              <FormControl isRequired isInvalid={"confirmPassword" in errors}>
+                <FormControl.Label>Confirm Password</FormControl.Label>
+                <Controller
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      id="confirm-password"
+                      onBlur={field.onBlur}
+                      onChangeText={(val) => field.onChange(val)}
+                      value={field.value}
+                      type="password"
+                    />
+                  )}
+                  name="confirmPassword"
+                  rules={{
+                    required: "Field is required",
+                    minLength: {
+                      value: 8,
+                      message: "Password must have at least 8 characters",
+                    },
+                    validate: {
+                      samePassword: (value) => {
+                        if (value !== watch("password"))
+                          return "Passwords must be the same";
+                      },
+                    },
+                  }}
+                  defaultValue=""
+                />
+                <FormControl.ErrorMessage>
+                  {errors.password?.message}
+                </FormControl.ErrorMessage>
               </FormControl>
               <Button
                 mt="2"
                 colorScheme="indigo"
                 onPress={handleSubmit(onSubmit)}
               >
-                Sign in
+                Sign up
               </Button>
-              <HStack mt="6" justifyContent="center">
-                <Text
-                  fontSize="sm"
-                  color="coolGray.600"
-                  _dark={{
-                    color: "warmGray.200",
-                  }}
-                >
-                  I'm a new user.{" "}
-                </Text>
-                <Link href="sign-up">
-                  <Text color="indigo.500" fontWeight="medium" fontSize="sm">
-                    Sign Up
-                  </Text>
-                </Link>
-              </HStack>
             </VStack>
           </Box>
-          <Copyright />
+          <View style={{ flex: 1 }} />
         </Center>
       </KeyboardAvoidingView>
     </NativeBaseProvider>
