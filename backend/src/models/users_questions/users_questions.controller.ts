@@ -7,14 +7,19 @@ import {
   Param,
   Delete,
   Query,
+  Headers,
 } from '@nestjs/common';
 import { UsersQuestionsService } from './users_questions.service';
 import { CreateUserQuestionDto } from './dto/create-user_question.dto';
 import { UpdateUserQuestionDto } from './dto/update-user_question.dto';
+import { AuthService } from 'src/auth/auth.service';
 
 @Controller('users-questions')
 export class UsersQuestionsController {
-  constructor(private readonly usersQuestionsService: UsersQuestionsService) {}
+  constructor(
+    private readonly usersQuestionsService: UsersQuestionsService,
+    private authService: AuthService,
+  ) {}
 
   @Post()
   create(@Body() createUserQuestionDto: CreateUserQuestionDto) {
@@ -22,8 +27,13 @@ export class UsersQuestionsController {
   }
 
   @Get()
-  findAllByUser(@Query('user-id') user_id: string) {
-    return this.usersQuestionsService.findAllByUser(+user_id);
+  findAllByUser(
+    @Headers('Authorization') authorization: string | undefined,
+    // @Query('user-id') user_id: string,
+  ) {
+    const jwt = this.authService.getJWT(authorization);
+    const user_id = jwt.sub;
+    return this.usersQuestionsService.findAllByUser(user_id);
   }
 
   @Patch(':id')

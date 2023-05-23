@@ -2,10 +2,13 @@ import {
   Injectable,
   UnauthorizedException,
   NotFoundException,
+  HttpException,
+  BadRequestException,
 } from '@nestjs/common';
 import { UsersService } from '../models/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { JwtPayload } from './JwtPayload';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +16,18 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
+
+  getJWT(authorization: string | undefined) {
+    if (!authorization) {
+      throw new UnauthorizedException();
+    }
+    if (!authorization.startsWith('Bearer ')) {
+      throw new BadRequestException();
+    }
+    const token = authorization.slice('Bearer '.length);
+    const payload = this.jwtService.decode(token);
+    return payload as JwtPayload;
+  }
 
   async signIn(email: string, password: string): Promise<any> {
     const user = await this.usersService.findOneByEmail(email);
@@ -22,8 +37,9 @@ export class AuthService {
     if (!(await bcrypt.compare(password, user.password))) {
       throw new UnauthorizedException();
     }
-    const payload = { email: user.email, sub: user.id };
+    const payload: JwtPayload = { email: user.email, sub: user.id };
     return {
+      user_id: user.id,
       access_token: await this.jwtService.signAsync(payload),
     };
   }
@@ -40,6 +56,7 @@ export class AuthService {
     });
     const payload = { email: user.email, sub: user.id };
     return {
+      user_id: user.id,
       access_token: await this.jwtService.signAsync(payload),
     };
   }

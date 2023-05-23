@@ -37,11 +37,11 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Tab One",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" />,
+          tabBarIcon: () => <TabBarIcon name="code" />,
         }}
       />
       <Tabs.Screen
-        name="setup"
+        name="QuestionsSetup"
         options={{
           title: "Setup",
           tabBarIcon: () => <TabBarIcon name="code" />,
