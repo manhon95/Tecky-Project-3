@@ -23,7 +23,7 @@ import { useRoute } from "@react-navigation/native";
 function Example() {
   const [mode, setMode] = useState("Basic");
   return (
-    <Center w="100%" borderWidth={1} flex={1} justifyContent={"start"}>
+    <Center w="100%" flex={1} justifyContent={"start"}>
       <Box
         _dark={{
           bg: "coolGray.800",
@@ -44,18 +44,18 @@ function Example() {
   );
 }
 
-type GetCompanyQuestionOutput = {
-  error?: string;
-  items: Array<CompanyQuestion>;
-};
+// type GetCompanyQuestionOutput = {
+//   error?: string;
+//   items: Array<CompanyQuestion>;
+// };
 
 function Basic() {
-  const id = useRoute().params?.["id"];
+  // const id = useRoute().params?.["id"];
 
-  const { render } = useGet<GetCompanyQuestionOutput>(
-    `/company/${id}/questions`,
-    {}
-  );
+  // const { render } = useGet<GetCompanyQuestionOutput>(
+  //   `/company/${id}/questions`,
+  //   {}
+  // );
 
   const data = [
     {
@@ -222,7 +222,7 @@ function Basic() {
 
   return (
     <Box bg="white" safeArea flex="1">
-      {render((json) => (
+      {/* {render((json) => (
         <SwipeListView
           data={json.items}
           renderItem={renderItem}
@@ -233,7 +233,17 @@ function Basic() {
           previewOpenDelay={3000}
           onRowDidOpen={onRowDidOpen}
         />
-      ))}
+      ))} */}
+      <SwipeListView
+        data={data}
+        renderItem={renderItem}
+        renderHiddenItem={renderHiddenItem}
+        rightOpenValue={-130}
+        previewRowKey={"0"}
+        previewOpenValue={-40}
+        previewOpenDelay={3000}
+        onRowDidOpen={onRowDidOpen}
+      />
     </Box>
   );
 }

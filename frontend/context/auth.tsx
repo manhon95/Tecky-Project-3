@@ -30,21 +30,17 @@ async function getValueFor(key: string) {
   return result;
 }
 
-type AuthState = { token: string };
+type AuthState = {
+  signIn: (token: string) => Promise<void>;
+  signOut: () => Promise<void>;
+  userToken: string | null;
+};
 
 const AuthContext = createContext<AuthState | null>(null);
 
 // This hook can be used to access the user info.
 export function useAuth() {
   return useContext(AuthContext);
-}
-
-export function useToken() {
-  const state = useAuth();
-  // if (!state) {
-  //   throw new Error("not login or forget to wrap with AuthContext Provider?");
-  // }
-  return state?.token;
 }
 
 // This hook will protect the route access based on user authentication.
@@ -73,7 +69,7 @@ async function loadUserTokenFromStorage(
   setAuth: React.Dispatch<React.SetStateAction<string | null>>
 ) {
   const token = await getValueFor("userToken");
-  setAuth(token);
+  if (token) setAuth(token);
 }
 
 async function setUserTokenFromStorage(

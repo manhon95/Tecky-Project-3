@@ -38,7 +38,10 @@ function Copyright(props: any) {
 }
 
 export default function SignIn() {
-  const { signIn } = useAuth();
+  const authContext = useAuth();
+  if (!authContext) {
+    throw new Error("authContext not found");
+  }
 
   const {
     control,
@@ -51,13 +54,13 @@ export default function SignIn() {
     const res = await fetch(BackendAPI.signIn, {
       method: "POST",
       headers: {
-        Accept: "application/json",
+        "Accept": "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
     const result = await res.json();
-    if (result.access_token) signIn(result.access_token);
+    if (result.access_token) authContext.signIn(result.access_token);
     reset();
   };
 

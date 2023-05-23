@@ -15,7 +15,11 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
-  const { signOut } = useAuth();
+  const authContext = useAuth();
+  if (!authContext) {
+    throw new Error("authContext not found");
+  }
+
   const colorScheme = useColorScheme();
 
   return (
@@ -23,7 +27,7 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         headerRight: () => (
-          <Pressable onPress={signOut}>
+          <Pressable onPress={authContext.signOut}>
             <FontAwesome
               size={28}
               style={{ marginBottom: 0, marginEnd: 10 }}

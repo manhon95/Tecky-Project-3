@@ -1,10 +1,10 @@
-import BackendAPI from "./constants/BackendAPI";
+import BackendAPI from "../constants/BackendAPI";
 
 export async function callAPI(input: {
   method: "POST" | "GET";
   pathname: string;
   body?: object;
-  token?: string;
+  token?: string | null;
 }) {
   try {
     const url = BackendAPI.backendOrigin + input.pathname;

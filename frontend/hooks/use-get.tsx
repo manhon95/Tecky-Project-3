@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { callAPI } from "../api";
+import { callAPI } from "../api/api";
 import { useAuth } from "../context/auth";
 import { Text } from "../components/Themed";
 
@@ -10,7 +10,7 @@ export function useGet<T extends { error?: string }>(
   const [state, setState] = useState(initialValue);
   const [isLoading, setIsLoading] = useState(true);
 
-  const token = useAuth()?.token;
+  const token = useAuth()?.userToken;
 
   useEffect(() => {
     reload();
