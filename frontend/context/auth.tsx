@@ -69,6 +69,7 @@ async function loadUserTokenFromStorage(
   setAuth: React.Dispatch<React.SetStateAction<string | null>>
 ) {
   const token = await getValueFor("userToken");
+  const userId = await getValueFor("userId");
   if (token) setAuth(token);
 }
 
@@ -77,6 +78,7 @@ async function setUserTokenFromStorage(
   token: string
 ) {
   await saveValue("userToken", token);
+  await saveValue("userId", token);
   setAuth(token);
 }
 
@@ -84,6 +86,7 @@ async function deleteUserTokenFromStorage(
   setAuth: React.Dispatch<React.SetStateAction<string | null>>
 ) {
   await deleteValue("userToken");
+  await deleteValue("userId");
   setAuth(null);
 }
 

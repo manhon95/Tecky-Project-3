@@ -16,10 +16,7 @@ import { AuthService } from 'src/auth/auth.service';
 
 @Controller('users-questions')
 export class UsersQuestionsController {
-  constructor(
-    private readonly usersQuestionsService: UsersQuestionsService,
-    private authService: AuthService,
-  ) {}
+  constructor(private readonly usersQuestionsService: UsersQuestionsService) {}
 
   @Post()
   create(@Body() createUserQuestionDto: CreateUserQuestionDto) {
@@ -27,13 +24,8 @@ export class UsersQuestionsController {
   }
 
   @Get()
-  findAllByUser(
-    @Headers('Authorization') authorization: string | undefined,
-    // @Query('user-id') user_id: string,
-  ) {
-    const jwt = this.authService.getJWT(authorization);
-    const user_id = jwt.sub;
-    return this.usersQuestionsService.findAllByUser(user_id);
+  findAllByUser(@Query('user-id') user_id: string) {
+    return this.usersQuestionsService.findAllByUser(+user_id);
   }
 
   @Patch(':id')

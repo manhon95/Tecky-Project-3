@@ -2,8 +2,6 @@ import {
   Injectable,
   UnauthorizedException,
   NotFoundException,
-  HttpException,
-  BadRequestException,
 } from '@nestjs/common';
 import { UsersService } from '../models/users/users.service';
 import { JwtService } from '@nestjs/jwt';
@@ -17,17 +15,17 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  getJWT(authorization: string | undefined) {
-    if (!authorization) {
-      throw new UnauthorizedException();
-    }
-    if (!authorization.startsWith('Bearer ')) {
-      throw new BadRequestException();
-    }
-    const token = authorization.slice('Bearer '.length);
-    const payload = this.jwtService.decode(token);
-    return payload as JwtPayload;
-  }
+  // getJWT(authorization: string | undefined) {
+  //   if (!authorization) {
+  //     throw new UnauthorizedException();
+  //   }
+  //   if (!authorization.startsWith('Bearer ')) {
+  //     throw new BadRequestException();
+  //   }
+  //   const token = authorization.slice('Bearer '.length);
+  //   const payload = this.jwtService.decode(token);
+  //   return payload as JwtPayload;
+  // }
 
   async signIn(email: string, password: string): Promise<any> {
     const user = await this.usersService.findOneByEmail(email);
