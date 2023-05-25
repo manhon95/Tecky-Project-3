@@ -23,19 +23,38 @@ export class UsersQuestionsService {
   findAllByUser(user_id: number): Promise<UserQuestion[]> {
     return this.userQuestionModel.findAll({
       include: { model: Question, attributes: ['question'] },
-      attributes: ['answer'],
+      attributes: ['id', 'answer'],
       where: {
         user_id,
       },
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} usersQuestion`;
+  findOne(user_id: number, question_id: number) {
+    return this.userQuestionModel.findAll({
+      include: { model: Question, attributes: ['question'] },
+      attributes: ['id', 'answer'],
+      where: {
+        user_id,
+        question_id,
+      },
+    });
   }
 
-  update(id: number, updateUserQuestionDto: UpdateUserQuestionDto) {
-    return `This action updates a #${id} usersQuestion`;
+  update(
+    user_id: number,
+    question_id: number,
+    updateUserQuestionDto: UpdateUserQuestionDto,
+  ) {
+    this.userQuestionModel.update(
+      { updateUserQuestionDto },
+      {
+        where: {
+          user_id,
+          question_id,
+        },
+      },
+    );
   }
 
   remove(id: number) {

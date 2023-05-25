@@ -25,19 +25,6 @@ type FormData = {
   confirmPassword: string;
 };
 
-function Copyright(props: any) {
-  return (
-    <Text alignItems="center" mt={8} mb={4}>
-      {"Copyright © "}
-      <Link color="inherit" href="https://nativebase.io">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Text>
-  );
-}
-
 export default function SignUp() {
   const authContext = useAuth();
   if (!authContext) {
@@ -62,7 +49,8 @@ export default function SignUp() {
       body: JSON.stringify(data),
     });
     const result = await res.json();
-    if (result.access_token) authContext.signIn(result.access_token);
+    if (result.access_token && result.user_id)
+      authContext.signIn(`${result.access_token}`, `${result.user_id}`);
     reset();
   };
 

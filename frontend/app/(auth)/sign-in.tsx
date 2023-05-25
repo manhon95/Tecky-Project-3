@@ -60,7 +60,8 @@ export default function SignIn() {
       body: JSON.stringify(data),
     });
     const result = await res.json();
-    if (result.access_token) authContext.signIn(result.access_token);
+    if (result.access_token && result.user_id)
+      authContext.signIn(`${result.access_token}`, `${result.user_id}`);
     reset();
   };
 

@@ -8,11 +8,12 @@ import {
   Delete,
   Query,
   Headers,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersQuestionsService } from './users_questions.service';
 import { CreateUserQuestionDto } from './dto/create-user_question.dto';
 import { UpdateUserQuestionDto } from './dto/update-user_question.dto';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('users-questions')
 export class UsersQuestionsController {
@@ -28,12 +29,18 @@ export class UsersQuestionsController {
     return this.usersQuestionsService.findAllByUser(+user_id);
   }
 
-  @Patch(':id')
+  @UseGuards(AuthGuard)
+  @Patch()
   update(
-    @Param('id') id: string,
+    @Query('user-id') user_id: string,
+    @Query('question-id') question_id: string,
     @Body() updateUserQuestionDto: UpdateUserQuestionDto,
   ) {
-    return this.usersQuestionsService.update(+id, updateUserQuestionDto);
+    return this.usersQuestionsService.update(
+      +user_id,
+      +question_id,
+      updateUserQuestionDto,
+    );
   }
 
   @Delete(':id')
