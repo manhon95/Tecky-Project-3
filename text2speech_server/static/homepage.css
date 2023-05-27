@@ -50,8 +50,8 @@ display: flex;
 #companyContain{
     background-color: var(--BG-colour);
     width: 250px;
-    height: 100%;
-    
+    overflow: auto;
+
 }
 
 .companyButtons{
@@ -76,13 +76,14 @@ display: flex;
     width: calc(100% - 250px);
     position: relative;
     background:  var(--BG-colour);
+    height: calc(100vh - 55px);
 }
 
 #chatDisplay{
     margin-bottom: 0;
     min-width: 800px;
+    overflow: auto;
     height: calc(100vh - 120px);
-
 }
 
 .questionText{
