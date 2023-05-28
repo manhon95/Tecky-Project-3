@@ -114,48 +114,48 @@ def create_access_token(data: dict, expires_delta: timedelta or None = None):
     encode_jwt = jwt.generate_jwt(to_encode, SECRET_KEY, ALGORITHM, timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
     return encode_jwt
 
-async def get_current_user(token: str = Depends(oauth2_scheme)):
-    credential_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials", headers={"www_Authenticate": "Bearer"})
+# async def get_current_user(token: str = Depends(oauth2_scheme)):
+#     credential_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials", headers={"www_Authenticate": "Bearer"})
 
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithm=[ALGORITHM])
-        username:str = payload.get("sub")
-        if username is None:
-            raise credential_exception
+#     try:
+#         payload = jwt.decode(token, SECRET_KEY, algorithm=[ALGORITHM])
+#         username:str = payload.get("sub")
+#         if username is None:
+#             raise credential_exception
         
-        token_data = TokenData(username=username)
-    except JWTError:
-        raise credential_exception
+#         token_data = TokenData(username=username)
+#     except JWTError:
+#         raise credential_exception
     
-    user = get_user(db, username=token_data.username)
-    if user is None:
-        raise credential_exception
-    return user
+#     user = get_user(db, username=token_data.username)
+#     if user is None:
+#         raise credential_exception
+#     return user
 
-async def get_current_active_user(current_user: UserInDB = Depends(get_current_user)):
-    if current_user.disable:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user
+# async def get_current_active_user(current_user: UserInDB = Depends(get_current_user)):
+#     if current_user.disable:
+#         raise HTTPException(status_code=400, detail="Inactive user")
+#     return current_user
 
-dir_path_input = "recordings"
-dir_path_output = "recordings/output"
-audio_files_input = []
-audio_files_output = []
+# dir_path_input = "recordings"
+# dir_path_output = "recordings/output"
+# audio_files_input = []
+# audio_files_output = []
 
-def clear_audio_on_start():
-    for path in os.listdir(dir_path_input):
-        if os.path.isfile(os.path.join(dir_path_input, path)):
-            audio_files_input.append(path)
+# def clear_audio_on_start():
+#     for path in os.listdir(dir_path_input):
+#         if os.path.isfile(os.path.join(dir_path_input, path)):
+#             audio_files_input.append(path)
 
-    for path in os.listdir(dir_path_output):
-        if os.path.isfile(os.path.join(dir_path_output, path)):
-            audio_files_output.append(path)
-    print(audio_files_output)
+#     for path in os.listdir(dir_path_output):
+#         if os.path.isfile(os.path.join(dir_path_output, path)):
+#             audio_files_output.append(path)
+#     print(audio_files_output)
 
-def setInterval(func,time):
-    e = threading.Event()
-    while not e.wait(time):
-        func()
+# def setInterval(func,time):
+#     e = threading.Event()
+#     while not e.wait(time):
+#         func()
 
 
 # def audio_remove_timer():
