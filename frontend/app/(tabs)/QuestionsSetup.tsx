@@ -1,5 +1,10 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Dimensions, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  ListRenderItemInfo,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import {
   NativeBaseProvider,
   Box,
@@ -27,6 +32,7 @@ import { useAuth } from "../../context/auth";
 import { callAPI } from "../../api/api";
 
 type UserQuestion = {
+  id: string;
   question: { question: string };
   answer: string;
 };
@@ -37,7 +43,6 @@ type ModalState = {
 };
 
 export default function QuestionsSetup() {
-  const [mode, setMode] = useState("Basic");
   const [data, setData] = useState<UserQuestion[]>([]);
   const [modal, setModal] = useState<ModalState>({ show: false });
   const authContext = useAuth();
@@ -61,10 +66,7 @@ export default function QuestionsSetup() {
           minW="400px"
           w="100%"
         >
-          <Basic data={data} setModal={setModal} />
-          {/* <ScrollView showsVerticalScrollIndicator={false}>
-            <Basic data={data} setModal={setModal} />
-          </ScrollView> */}
+          <Basic data={data} setData={setData} setModal={setModal} />
         </Box>
         <Modal
           isOpen={modal.show}
@@ -118,10 +120,9 @@ async function saveUserQuestion(
   setModal: Dispatch<SetStateAction<ModalState>>
 ): Promise<void> {
   const result: UserQuestion[] = await callAPI({
-    method: "GET",
-    pathname: `/users-questions?user-id=${userId}`,
+    method: "PATCH",
+    pathname: `/users-questions?user-id=${userQuestionId}`,
   });
-  setData(result);
 }
 
 async function loadUserQuestion(
@@ -135,91 +136,31 @@ async function loadUserQuestion(
   setData(result);
 }
 
-// type GetCompanyQuestionOutput = {
-//   error?: string;
-//   items: Array<CompanyQuestion>;
-// };
-
 function Basic(props: {
   data: UserQuestion[];
+  setData: Dispatch<SetStateAction<UserQuestion[]>>;
   setModal: Dispatch<SetStateAction<ModalState>>;
 }) {
-  // const id = useRoute().params?.["id"];
-
-  // const { render } = useGet<GetCompanyQuestionOutput>(
-  //   `/company/${id}/questions`,
-  //   {}
-  // )
-  // const data = [
-  //   {
-  //     key: null,
-  //     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-  //     fullName: "Afreen Khan",
-  //     timeStamp: "12:47 PM",
-  //     recentText: "Good Day!",
-  //     avatarUrl:
-  //       "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  //   },
-  //   {
-  //     key: null,
-  //     id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-  //     fullName: "Sujita Mathur",
-  //     timeStamp: "11:11 PM",
-  //     recentText: "Cheer up, there!",
-  //     avatarUrl:
-  //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyEaZqT3fHeNrPGcnjLLX1v_W4mvBlgpwxnA&usqp=CAU",
-  //   },
-  //   {
-  //     key: null,
-  //     id: "58694a0f-3da1-471f-bd96-145571e29d72",
-  //     fullName: "Anci Barroco",
-  //     timeStamp: "6:22 PM",
-  //     recentText: "Good Day!",
-  //     avatarUrl: "https://miro.medium.com/max/1400/0*0fClPmIScV5pTLoE.jpg",
-  //   },
-  //   {
-  //     key: null,
-  //     id: "68694a0f-3da1-431f-bd56-142371e29d72",
-  //     fullName: "Aniket Kumar",
-  //     timeStamp: "8:56 PM",
-  //     recentText: "All the best",
-  //     avatarUrl:
-  //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr01zI37DYuR8bMV5exWQBSw28C1v_71CAh8d7GP1mplcmTgQA6Q66Oo--QedAN1B4E1k&usqp=CAU",
-  //   },
-  //   {
-  //     key: null,
-  //     id: "28694a0f-3da1-471f-bd96-142456e29d72",
-  //     fullName: "Kiara",
-  //     timeStamp: "12:47 PM",
-  //     recentText: "I will call today.",
-  //     avatarUrl:
-  //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU",
-  //   },
-  // ];
-  const [listData, setListData] = useState(props.data);
-
-  const closeRow = (rowMap: any, rowKey: any) => {
+  const closeRow = (rowMap: RowMap<UserQuestion>, rowKey: string) => {
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
     }
   };
 
-  const deleteRow = (rowMap: any, rowKey: any) => {
+  const deleteRow = (rowMap: RowMap<UserQuestion>, rowKey: string) => {
+    console.log("Delete this row", rowKey);
     closeRow(rowMap, rowKey);
-    const newData = [...listData];
-    const prevIndex = listData.findIndex((item) => item.key === rowKey);
-    newData.splice(prevIndex, 1);
-    setListData(newData);
+    props.setData(props.data.filter((item) => item.id !== rowKey));
   };
 
-  const onRowDidOpen = (rowKey: any) => {
+  const onRowDidOpen = (rowKey: string) => {
     console.log("This row opened", rowKey);
   };
 
-  const renderItem = ({ item, index }: { item: UserQuestion; index: any }) => (
+  const renderItem = (data: ListRenderItemInfo<UserQuestion>) => (
     <Box>
       <Pressable
-        onPress={() => props.setModal({ show: true, item })}
+        onPress={() => props.setModal({ show: true, item: data.item })}
         _dark={{
           bg: "coolGray.800",
         }}
@@ -237,7 +178,7 @@ function Basic(props: {
                 }}
                 bold
               >
-                {item.question.question}
+                {data.item.question.question}
               </Text>
               <Text
                 color="coolGray.600"
@@ -245,7 +186,7 @@ function Basic(props: {
                   color: "warmGray.200",
                 }}
               >
-                {item.answer}
+                {data.item.answer}
               </Text>
             </VStack>
             <Spacer />
@@ -255,34 +196,17 @@ function Basic(props: {
     </Box>
   );
 
-  const renderHiddenItem = (data: any, rowMap: any) => (
+  const renderHiddenItem = (
+    data: ListRenderItemInfo<UserQuestion>,
+    rowMap: RowMap<UserQuestion>
+  ) => (
     <HStack flex="1" pl="2">
       <Pressable
         w="70"
         ml="auto"
-        bg="coolGray.200"
-        justifyContent="center"
-        onPress={() => closeRow(rowMap, data.item.key)}
-        _pressed={{
-          opacity: 0.5,
-        }}
-      >
-        <VStack alignItems="center" space={2}>
-          <Icon
-            as={<Entypo name="dots-three-horizontal" />}
-            size="xs"
-            color="coolGray.800"
-          />
-          <Text fontSize="xs" fontWeight="medium" color="coolGray.800">
-            More
-          </Text>
-        </VStack>
-      </Pressable>
-      <Pressable
-        w="70"
         bg="red.500"
         justifyContent="center"
-        onPress={() => deleteRow(rowMap, data.item.key)}
+        onPress={() => deleteRow(rowMap, data.item.id)}
         _pressed={{
           opacity: 0.5,
         }}
@@ -299,18 +223,6 @@ function Basic(props: {
 
   return (
     <Box bg="white" safeArea flex="1">
-      {/* {render((json) => (
-        <SwipeListView
-          data={json.items}
-          renderItem={renderItem}
-          renderHiddenItem={renderHiddenItem}
-          rightOpenValue={-130}
-          previewRowKey={"0"}
-          previewOpenValue={-40}
-          previewOpenDelay={3000}
-          onRowDidOpen={onRowDidOpen}
-        />
-      ))} */}
       <SwipeListView
         data={props.data}
         renderItem={renderItem}
