@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from  datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
-from jose import JWTError
+# from jose import JWTError
 import uvicorn
 import python_jwt as jwt
 import jwcrypto.jwk as jwk
