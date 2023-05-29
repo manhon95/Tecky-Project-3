@@ -286,7 +286,7 @@ async def upload_file(request: Request, company_question: str = Form(), file: Up
 # -------------------------------- init server ------------------------------- #
 if __name__ == "__main__":
     try:
-        clear_audio_on_start()
+        # clear_audio_on_start()
         uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)   
     except Exception as e:
         print(e)
