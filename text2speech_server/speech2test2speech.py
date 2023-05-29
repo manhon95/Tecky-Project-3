@@ -19,7 +19,7 @@ def wav_to_flac(wav_path):
 
 def answer_question(input_audio, company_question, fileName, audio_timelist):
     print("get question--- ", input_audio, "conmany--- ", company_question,"filename---  ", fileName,"audio--- ", audio_timelist)
-    x = requests.get(f"http://13.237.77.71/users-questions?user-id={company_question}", headers={'Accept': 'application/json'})
+    x = requests.get(f"https://www.manhon95.online/users-questions?user-id={company_question}", headers={'Accept': 'application/json'})
     # print(f"audio input: {input_audio}")
 
     try:
