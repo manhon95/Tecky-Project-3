@@ -1,4 +1,4 @@
-import { useRouter, useSegments } from "expo-router";
+import { SplashScreen, useRouter, useSegments } from "expo-router";
 import {
   Dispatch,
   ReactNode,
@@ -6,6 +6,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useReducer,
   useState,
 } from "react";
 import * as SecureStore from "expo-secure-store";
@@ -21,7 +22,28 @@ type AuthState = {
   signIn: (token: string, id: string) => Promise<void>;
   signOut: () => Promise<void>;
   user: User | null;
+  loading: boolean;
 };
+
+type AuthAction = {
+  type: string;
+  token?: string;
+  id?: string;
+};
+
+function authReducer(state: AuthState, action: AuthAction): AuthState {
+  if (action.type === "sign-in" && action.token && action.id) {
+    return {
+      ...state,
+      user: { token: action.token, id: action.id },
+      loading: false,
+    };
+  }
+  if (action.type === "sign-out") {
+    return { ...state, user: null, loading: false };
+  }
+  throw Error("Unknown action.");
+}
 
 const AuthContext = createContext<AuthState | null>(null);
 
@@ -53,35 +75,40 @@ function useProtectedRoute(user: User | null) {
 }
 
 export function Provider(props: { children: ReactNode }) {
-  const [user, setAuth] = useState<User | null>(null);
-  useEffect(() => {
-    loadUserTokenFromStorage(setAuth);
-  }, []);
-  useProtectedRoute(user);
-  const value = {
+  // const [user, setAuth] = useState<User | null>(null);
+  const [authState, authDispatch] = useReducer(authReducer, {
+    user: null,
+    loading: true,
     signIn: (token: string, id: string) =>
-      setUserTokenFromStorage(setAuth, token, id),
-    signOut: () => deleteUserTokenFromStorage(setAuth),
-    user,
-  };
+      setUserTokenFromStorage(authDispatch, token, id),
+    signOut: () => deleteUserTokenFromStorage(authDispatch),
+  });
+  console.log(authState);
+  useEffect(() => {
+    loadUserTokenFromStorage(authDispatch);
+  }, []);
+  useProtectedRoute(authState.user);
   return (
-    <AuthContext.Provider value={value}>{props.children}</AuthContext.Provider>
+    <AuthContext.Provider value={authState}>
+      {authState.loading && <SplashScreen />}
+      {!authState.loading && props.children}
+    </AuthContext.Provider>
   );
 }
 
-async function saveValue(key: string, value: string) {
+async function saveValue(key: string, value: string): Promise<void> {
   Platform.OS === "web"
     ? await AsyncStorage.setItem(key, value)
     : await SecureStore.setItemAsync(key, value);
 }
 
-async function deleteValue(key: string) {
+async function deleteValue(key: string): Promise<void> {
   Platform.OS === "web"
     ? await AsyncStorage.removeItem(key)
     : await SecureStore.deleteItemAsync(key);
 }
 
-async function getValueFor(key: string) {
+async function getValueFor(key: string): Promise<string | null> {
   const result =
     Platform.OS === "web"
       ? await AsyncStorage.getItem(key)
@@ -90,27 +117,29 @@ async function getValueFor(key: string) {
 }
 
 async function loadUserTokenFromStorage(
-  setAuth: Dispatch<SetStateAction<User | null>>
-) {
+  authDispatch: Dispatch<SetStateAction<AuthAction>>
+): Promise<void> {
   const token = await getValueFor("userToken");
   const id = await getValueFor("userId");
-  if (token && id) setAuth({ token, id });
+  token && id
+    ? authDispatch({ type: "sign-in", token, id })
+    : authDispatch({ type: "sign-out" });
 }
 
 async function setUserTokenFromStorage(
-  setAuth: Dispatch<SetStateAction<User | null>>,
+  authDispatch: Dispatch<SetStateAction<AuthAction>>,
   token: string,
   id: string
-) {
+): Promise<void> {
   await saveValue("userToken", token);
   await saveValue("userId", id);
-  setAuth({ token, id });
+  authDispatch({ type: "sign-in", token, id });
 }
 
 async function deleteUserTokenFromStorage(
-  setAuth: Dispatch<SetStateAction<User | null>>
-) {
+  authDispatch: Dispatch<SetStateAction<AuthAction>>
+): Promise<void> {
   await deleteValue("userToken");
   await deleteValue("userId");
-  setAuth(null);
+  authDispatch({ type: "sign-out" });
 }
