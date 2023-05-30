@@ -3,10 +3,10 @@ import { UsersQuestionsService } from './users_questions.service';
 import { UsersQuestionsController } from './users_questions.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { UserQuestion } from './entities/user_question.entity';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([UserQuestion]), AuthGuard],
+  imports: [SequelizeModule.forFeature([UserQuestion]), AuthModule],
   controllers: [UsersQuestionsController],
   providers: [UsersQuestionsService],
 })
