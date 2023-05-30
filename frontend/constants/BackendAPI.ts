@@ -1,7 +1,7 @@
 export default {
-  backendOrigin: "http://13.237.77.71",
-  signUp: "http://13.237.77.71/auth/sign-up",
-  signIn: "http://13.237.77.71/auth/sign-in",
+  backendOrigin: "https://www.manhon95.online",
+  signUp: "https://www.manhon95.online/auth/sign-up",
+  signIn: "https://www.manhon95.online/auth/sign-in",
   getQuestion: (userId: string) =>
-    "http://13.237.77.71/users-questions?user-id=" + userId,
+    "https://www.manhon95.online/users-questions?user-id=" + userId,
 };
