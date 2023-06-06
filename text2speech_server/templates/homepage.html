@@ -24,7 +24,7 @@
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
       crossorigin="anonymous"
     ></script>
-    <link href="{{ url_for('static', path='/homepage.css') }}" rel="stylesheet">  </head>
+    <link href="/static/homepage.css" rel="stylesheet">  </head>
   <body>
     <div id="titles">
       <h1 id="companyHeader">companies</h1>
@@ -76,7 +76,7 @@
             <ul
               class="companySelectionNav navbar-nav justify-content-end flex-grow-1 pe-3"
             >
-              <!-- ------------------ create company tab from template ------------------- -->
+              <!-- ------------------ create company tab from template here ------------------- -->
             </ul>
           </div>
         </div>
@@ -186,63 +186,81 @@
     let outPutAudio = document.getElementById("outPutAudio");
     let companySelectionNav = document.querySelector(".companySelectionNav");
     let companySelection = document.querySelector(".companySelection");
-    let companyTable = [
-      { name: "Tecky", pic: "static/companyPictures/tecky_icon.jpg" },
-      { name: "SteamDeck", pic: "static/companyPictures/steam_icon.png" },
-      { name: "PandaPro", pic: "static/companyPictures/foodPanda_icon.png"}
-    ];
+    let companyTable = []
+    let x = []
+    // let companyTable = [
+    //   { name: "Tecky", pic: "static/companyPictures/tecky_icon.jpg" },
+    //   { name: "SteamDeck", pic: "static/companyPictures/steam_icon.png" },
+    //   { name: "PandaPro", pic: "static/companyPictures/foodPanda_icon.png"}
+    // ];
     let company_question = ""
 
     //<!-- ------------------------  make company tabs ------------------------- -->
-    
-    for (let key of companyTable) {
-      const template3 = document.querySelector("#companyTabsNav");
-      const clone3 = template3.content.cloneNode(true);
-      const companyButtons = clone3.querySelector(".companyButtons");
-      const companyPic = clone3.querySelector(".companyPic");
-      const companyName = clone3.querySelector(".companyName");
-      companyButtons.id = key.name;
-      companyPic.src = key.pic;
-      companyName.innerHTML = key.name;
-      companySelectionNav.appendChild(clone3);
-    }
 
-    for (let key of companyTable) {
-      const template3 = document.querySelector("#companyTabs");
-      const clone3 = template3.content.cloneNode(true);
-      const companyButtons = clone3.querySelector(".companyButtons");
-      const companyPic = clone3.querySelector(".companyPic");
-      const companyName = clone3.querySelector(".companyName");
-      companyButtons.id = key.name;
-      companyPic.src = key.pic;
-      companyName.innerHTML = key.name;
-      companySelection.appendChild(clone3);
-    }
+  createCompaniesTab()
 
-    // <!-- -------------------------- show selected tab --------------------------- -->
-    let companyButtons = document.querySelectorAll(".companyButtons");
-    for (let button of companyButtons) {
-      button.addEventListener("click", () => {
-        let selectTab = button.id;
+  async function getCompaniesID(){
+  let response = await fetch("https://www.manhon95.online/users");
+  companyTables = await response.json();
+  return companyTables
+}
 
-        for (let button of companyButtons) {
-          button.classList.remove("select");
-          if (button.id === selectTab) {
-            button.classList.add("select");
-          
-          for(let array in companyTable){
-            // console.log(companyTable[array].name)
-            if(companyTable[array].name == button.id){
-              company_question = Number(array) + 2
-              console.log(company_question)
-            }
-          }
+async function createCompaniesTab(){
+
+  companyTable = await getCompaniesID()
+  console.log(companyTable);
+
+
+  for (let key of companyTable) {
+    const template3 = document.querySelector("#companyTabsNav");
+    const clone3 = template3.content.cloneNode(true);
+    const companyButtons = clone3.querySelector(".companyButtons");
+    const companyPic = clone3.querySelector(".companyPic");
+    const companyName = clone3.querySelector(".companyName");
+    companyButtons.id = key.name;
+    // companyPic.src = key.pic;
+    companyName.innerHTML = key.name;
+    companySelectionNav.appendChild(clone3);
+  }
+  
+  for (let key of companyTable) {
+    console.log(key)
+    const template4 = document.querySelector("#companyTabs");
+    const clone4 = template4.content.cloneNode(true);
+    const companyButtons = clone4.querySelector(".companyButtons");
+    const companyPic = clone4.querySelector(".companyPic");
+    const companyName = clone4.querySelector(".companyName");
+    companyButtons.id = key.name;
+    // companyPic.src = key.pic;
+    companyName.innerHTML = key.name;
+    companySelection.appendChild(clone4);
+  }
+
+  // <!-- -------------------------- show selected tab --------------------------- -->
+  let companyButtons = document.querySelectorAll(".companyButtons");
+  for (let button of companyButtons) {
+    button.addEventListener("click", () => {
+      let selectTab = button.id;
+
+      for (let button of companyButtons) {
+        button.classList.remove("select");
+        if (button.id === selectTab) {
+          button.classList.add("select");
+        
+        for(let array in companyTable){
+          // console.log(companyTable[array].name)
+          if(companyTable[array].name == button.id){
+            company_question = Number(array) + 2
+            console.log(company_question)
           }
         }
+        }
+      }
 
-        ;
-      });
-    }
+      ;
+    });
+  }
+}
 
     // document.querySelector("#toLogin").addEventListener("click", () => {
     //   location.href = "login/login.html";
@@ -288,6 +306,7 @@
 
           const result = await res.json();
           console.log(result);
+        
 
           const template3 = document.querySelector("#questionText");
           const clone3 = template3.content.cloneNode(true);
