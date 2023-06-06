@@ -1,7 +1,7 @@
 import BackendAPI from "../constants/BackendAPI";
 
 export async function callAPI(input: {
-  method: "POST" | "GET";
+  method: "POST" | "GET" | "PATCH";
   pathname: string;
   body?: object;
   token?: string | null;
