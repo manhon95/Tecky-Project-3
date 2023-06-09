@@ -14,7 +14,8 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
     return this.userModel.create({
-      username: createUserDto.username,
+      name: createUserDto.username,
+      role: 'user',
       password: await bcrypt.hash(createUserDto.password, 10),
       email: createUserDto.email,
     });
