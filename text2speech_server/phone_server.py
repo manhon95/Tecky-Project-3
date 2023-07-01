@@ -49,7 +49,7 @@ async def answer_call(request: Request):
 
     print("Voice Response")
     resp = VoiceResponse()
-    resp.pause(length=30)
+    resp.pause(length=60)
     resp.hangup()
 
     return Response(content=str(resp), media_type="text/xml")
