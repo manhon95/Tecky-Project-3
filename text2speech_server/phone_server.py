@@ -62,7 +62,7 @@ def process_response(call_sid, input_recording_url):
         text = answer_question_from_url(input_recording_url, "2",
                                         "fileName", audio_timelist)
         resp = VoiceResponse()
-        output_recording_url = "https://1a03-118-140-204-138.ngrok-free.app/getAudio/fileName.wav"
+        output_recording_url = "http://54.253.17.152/getAudio/fileName.wav"
 
         if output_recording_url == None:
             resp.say("Error please call again")
