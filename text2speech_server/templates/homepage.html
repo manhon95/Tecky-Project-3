@@ -24,7 +24,7 @@
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
       crossorigin="anonymous"
     ></script>
-    <link href="/static/homepage.css" rel="stylesheet">  </head>
+    <link href="../static/homepage.css" rel="stylesheet"></head>
   <body>
     <div id="titles">
       <h1 id="companyHeader">companies</h1>
@@ -200,7 +200,8 @@
   createCompaniesTab()
 
   async function getCompaniesID(){
-  let response = await fetch("https://www.manhon95.online/users");
+  // let response = await fetch("https://www.manhon95.online/users");
+  let response = await fetch("http://3.104.136.222/users");
   companyTables = await response.json();
   return companyTables
 }
