@@ -25,7 +25,7 @@ def answer_question(input_audio, company_question, fileName, audio_timelist):
     print("get question--- ", input_audio, "conmany--- ", company_question,
           "filename---  ", fileName, "audio--- ", audio_timelist)
     x = requests.get(
-        f"https://www.manhon95.online/users-questions?user-id={company_question}", headers={'Accept': 'application/json'})
+        f"http://3.104.136.222/users-questions?user-id={company_question}", headers={'Accept': 'application/json'})
     print(x.json())
 
     try:
@@ -77,7 +77,7 @@ def answer_question_from_url(input_audio_url, company_question, fileName, audio_
     print("get question--- ", input_audio_url, "conmany--- ", company_question,
           "filename---  ", fileName, "audio--- ", audio_timelist)
     x = requests.get(
-        f"https://www.manhon95.online/users-questions?user-id={company_question}", headers={'Accept': 'application/json'})
+        f"http://3.104.136.222/users-questions?user-id={company_question}", headers={'Accept': 'application/json'})
     print(x.json())
 
     try:
