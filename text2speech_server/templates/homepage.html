@@ -199,7 +199,7 @@
     createCompaniesTab();
 
   async function getCompaniesID(){
-  let response = await fetch("https://www.manhon95.online/users");
+  let response = await fetch("http://3.104.136.222/users");
   companyTables = await response.json();
   return companyTables
 }
@@ -215,7 +215,7 @@
         const companyPic = clone3.querySelector(".companyPic");
         const companyName = clone3.querySelector(".companyName");
         companyButtons.id = key.name;
-        // companyPic.src = key.pic;
+        companyPic.src = `../static/companyPictures/${key.name}.png`;
         companyName.innerHTML = key.name;
         companySelectionNav.appendChild(clone3);
       }
@@ -228,7 +228,7 @@
         const companyPic = clone4.querySelector(".companyPic");
         const companyName = clone4.querySelector(".companyName");
         companyButtons.id = key.name;
-        // companyPic.src = key.pic;
+        companyPic.src = `../static/companyPictures/${key.name}.png`;
         companyName.innerHTML = key.name;
         companySelection.appendChild(clone4);
       }
