@@ -23,7 +23,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/getAudio", StaticFiles(directory="recordings/output"), name="getAudio")
+app.mount("/getAudio", StaticFiles(directory="recordings"), name="getAudio")
 
 # ------------------------------- Twilio client ------------------------------ #
 account_sid = TWILIO_ACCOUNT_SID
@@ -73,7 +73,7 @@ def process_response(call_sid, input_recording_url):
         text = answer_question_from_url(input_recording_url, "2",
                                         "fileName", audio_timelist)
         resp = VoiceResponse()
-        output_recording_url = "http://13.55.35.193/getAudio/fileName.wav"
+        output_recording_url = "http://13.55.35.193/getAudio/fileName.mp3"
 
         if output_recording_url == None:
             resp.say("Error please call again")

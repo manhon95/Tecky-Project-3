@@ -50,14 +50,15 @@ def answer_question(input_audio, company_question, fileName, audio_timelist):
 
         print("chatGPT responds: ", GPTresponse.choices[0].message.content)
 
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="googleAPI_key_project3.json"
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "googleAPI_key_project3.json"
 
         client = texttospeech.TextToSpeechClient()
 
-        synthesis_input = texttospeech.SynthesisInput(text=response.choices[0].message.content)
+        synthesis_input = texttospeech.SynthesisInput(
+            text=response.choices[0].message.content)
 
         voice = texttospeech.VoiceSelectionParams(
-            language_code="en-US", name= "yue-HK-Standard-B",
+            language_code="en-US", name="yue-HK-Standard-B",
         )
 
         # Select the type of audio file you want returned
@@ -73,7 +74,7 @@ def answer_question(input_audio, company_question, fileName, audio_timelist):
 
         # The response's audio_content is binary.
         with open(f'recordings/{fileName}.mp3', "wb") as out:
-        # Write the response to the output file.
+            # Write the response to the output file.
             out.write(response.audio_content)
             print(f'Audio content written to file "{fileName}.mp3"')
 
@@ -134,14 +135,15 @@ def answer_question_from_url(input_audio_url, company_question, fileName, audio_
 
         print("chatGPT responds: ", GPTresponse.choices[0].message.content)
 
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="googleAPI_key_project3.json"
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "googleAPI_key_project3.json"
 
         client = texttospeech.TextToSpeechClient()
 
-        synthesis_input = texttospeech.SynthesisInput(text=GPTresponse.choices[0].message.content)
+        synthesis_input = texttospeech.SynthesisInput(
+            text=GPTresponse.choices[0].message.content)
 
         voice = texttospeech.VoiceSelectionParams(
-            language_code="en-US", name= "yue-HK-Standard-B",
+            language_code="en-US", name="yue-HK-Standard-B",
         )
 
         # Select the type of audio file you want returned
@@ -157,14 +159,13 @@ def answer_question_from_url(input_audio_url, company_question, fileName, audio_
 
         # The response's audio_content is binary.
         with open(f'recordings/{fileName}.mp3', "wb") as out:
-        # Write the response to the output file.
+            # Write the response to the output file.
             out.write(response.audio_content)
             print(f'Audio content written to file "{fileName}.mp3"')
 
         text = {"input": transcript.text,
                 "output": GPTresponse.choices[0].message.content}
         return text
-
 
         # model_name = TTS.list_models()[7]
 
@@ -187,4 +188,3 @@ def answer_question_from_url(input_audio_url, company_question, fileName, audio_
 
     except Exception as e:
         print("exception ", e)
-
