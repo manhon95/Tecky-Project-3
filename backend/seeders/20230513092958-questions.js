@@ -241,6 +241,51 @@ module.exports = {
         type: 'Custom',
         question: 'How can I enjoy pandapro unlimited free delivery benefits?',
       },
+      {
+        industry_id: 1,
+        type: 'Custom',
+        question: '我沒有任何經驗，真的能完成這個課程嗎?',
+      },
+      {
+        industry_id: 1,
+        type: 'Custom',
+        question: '我有一點兒編程經驗，這個課程對我來說又會否太悶?',
+      },
+      {
+        industry_id: 1,
+        type: 'Custom',
+        question: '有沒有證書?',
+      },
+      {
+        industry_id: 1,
+        type: 'Custom',
+        question: '可以分期付款嗎?',
+      },
+      {
+        industry_id: 1,
+        type: 'Custom',
+        question: '完成課程後，真的能找到工作嗎?',
+      },
+      {
+        industry_id: 1,
+        type: 'Custom',
+        question: '這個課程與大學學位有何分別?',
+      },
+      {
+        industry_id: 1,
+        type: 'Custom',
+        question: '這個課程與網上課程有何分別?',
+      },
+      {
+        industry_id: 1,
+        type: 'Custom',
+        question: '你們距離荃灣西站遠嗎?',
+      },
+      {
+        industry_id: 1,
+        type: 'Custom',
+        question: '有沒有試堂?',
+      },
     ]);
   },
 
