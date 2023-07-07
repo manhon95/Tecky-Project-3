@@ -2,6 +2,9 @@ from speech2test2speech import answer_question_from_url
 from fastapi import FastAPI, Request, Response
 from fastapi.staticfiles import StaticFiles
 import uvicorn
+
+from fastapi.middleware.cors import CORSMiddleware
+
 import os
 from env import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
 from twilio.rest import Client
@@ -11,6 +14,14 @@ import threading
 from twilio.twiml.voice_response import VoiceResponse
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.mount("/getAudio", StaticFiles(directory="recordings/output"), name="getAudio")
 

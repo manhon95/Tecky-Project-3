@@ -1,4 +1,3 @@
-from TTS.api import TTS
 import requests
 import openai
 import os
@@ -50,14 +49,14 @@ def answer_question(input_audio, company_question, fileName, audio_timelist):
 
         print("chatGPT responds: ", response.choices[0].message.content)
 
-        model_name = TTS.list_models()[7]
+        # model_name = TTS.list_models()[7]
 
-        tts = TTS(model_name)
+        # tts = TTS(model_name)
 
-        tts = TTS(model_name="tts_models/multilingual/multi-dataset/your_tts",
-                  progress_bar=True, gpu=False)
-        tts.tts_to_file(f"{response.choices[0].message.content}", speaker_wav="recordings/speaker_voice/3.wav",
-                        language="en", file_path=f"recordings/output/{fileName}.wav")
+        # tts = TTS(model_name="tts_models/multilingual/multi-dataset/your_tts",
+        #           progress_bar=True, gpu=False)
+        # tts.tts_to_file(f"{response.choices[0].message.content}", speaker_wav="recordings/speaker_voice/3.wav",
+        #                 language="en", file_path=f"recordings/output/{fileName}.wav")
         audio_timelist.append(
             {"path": f"recordings/{fileName}.wav", "timeStamp": time.time()})
         print(audio_timelist)
