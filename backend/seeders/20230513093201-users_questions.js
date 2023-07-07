@@ -378,6 +378,8 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete('users_questions', null, {
       restartIdentity: true,
+      truncate: true,
+      cascade: true,
     });
   },
 };
