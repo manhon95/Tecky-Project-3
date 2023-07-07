@@ -7,46 +7,91 @@ module.exports = {
       {
         industry_id: 1,
         type: 'Custom',
-        question:
-          'I don’t have any experience at all. Will I be able to complete this course?',
+        question: '我沒有任何經驗，真的能完成這個課程嗎?',
       },
       {
         industry_id: 1,
         type: 'Custom',
-        question:
-          'I do have some previous experiences in coding. Will this course be too easy for me?',
+        question: '我有一點兒編程經驗，這個課程對我來說又會否太悶?',
       },
       {
         industry_id: 1,
         type: 'Custom',
-        question: 'Is there any certificate for the course?',
+        question: '有沒有證書?',
       },
       {
         industry_id: 1,
         type: 'Custom',
-        question: 'Can I make payments in instalments?',
+        question: '可以分期付款嗎?',
       },
       {
         industry_id: 1,
         type: 'Custom',
-        question:
-          'After completing the course, can I really secure a job offer?',
+        question: '完成課程後，真的能找到工作嗎?',
       },
       {
         industry_id: 1,
         type: 'Custom',
-        question: 'How is the course different from a university degree?',
+        question: '這個課程與大學學位有何分別?',
       },
       {
         industry_id: 1,
         type: 'Custom',
-        question: 'How is the course different from an online course?',
+        question: '這個課程與網上課程有何分別?',
       },
       {
         industry_id: 1,
         type: 'Custom',
-        question: 'Is it far away from Tsuen Wan West Station?',
+        question: '你們距離荃灣西站遠嗎?',
       },
+      {
+        industry_id: 1,
+        type: 'Custom',
+        question: '有沒有試堂?',
+      },
+      // {
+      //   industry_id: 1,
+      //   type: 'Custom',
+      //   question:
+      //     'I don’t have any experience at all. Will I be able to complete this course?',
+      // },
+      // {
+      //   industry_id: 1,
+      //   type: 'Custom',
+      //   question:
+      //     'I do have some previous experiences in coding. Will this course be too easy for me?',
+      // },
+      // {
+      //   industry_id: 1,
+      //   type: 'Custom',
+      //   question: 'Is there any certificate for the course?',
+      // },
+      // {
+      //   industry_id: 1,
+      //   type: 'Custom',
+      //   question: 'Can I make payments in instalments?',
+      // },
+      // {
+      //   industry_id: 1,
+      //   type: 'Custom',
+      //   question:
+      //     'After completing the course, can I really secure a job offer?',
+      // },
+      // {
+      //   industry_id: 1,
+      //   type: 'Custom',
+      //   question: 'How is the course different from a university degree?',
+      // },
+      // {
+      //   industry_id: 1,
+      //   type: 'Custom',
+      //   question: 'How is the course different from an online course?',
+      // },
+      // {
+      //   industry_id: 1,
+      //   type: 'Custom',
+      //   question: 'Is it far away from Tsuen Wan West Station?',
+      // },
       {
         industry_id: 1,
         type: 'Custom',
@@ -240,51 +285,6 @@ module.exports = {
         industry_id: 3,
         type: 'Custom',
         question: 'How can I enjoy pandapro unlimited free delivery benefits?',
-      },
-      {
-        industry_id: 1,
-        type: 'Custom',
-        question: '我沒有任何經驗，真的能完成這個課程嗎?',
-      },
-      {
-        industry_id: 1,
-        type: 'Custom',
-        question: '我有一點兒編程經驗，這個課程對我來說又會否太悶?',
-      },
-      {
-        industry_id: 1,
-        type: 'Custom',
-        question: '有沒有證書?',
-      },
-      {
-        industry_id: 1,
-        type: 'Custom',
-        question: '可以分期付款嗎?',
-      },
-      {
-        industry_id: 1,
-        type: 'Custom',
-        question: '完成課程後，真的能找到工作嗎?',
-      },
-      {
-        industry_id: 1,
-        type: 'Custom',
-        question: '這個課程與大學學位有何分別?',
-      },
-      {
-        industry_id: 1,
-        type: 'Custom',
-        question: '這個課程與網上課程有何分別?',
-      },
-      {
-        industry_id: 1,
-        type: 'Custom',
-        question: '你們距離荃灣西站遠嗎?',
-      },
-      {
-        industry_id: 1,
-        type: 'Custom',
-        question: '有沒有試堂?',
       },
     ]);
   },
