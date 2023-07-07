@@ -44,7 +44,8 @@ def answer_question(input_audio, company_question, fileName, audio_timelist):
         GPTresponse = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "user", "content": f"base on these Q and A {x.json()}. Only give the answer for the following question: {transcript.text}, if the question is empty reply with: Sorry, I cannot provide an answer with out a question"}
+                {"role": "user", "content": f"請根據常見問題： {x.json()}. 回答以下問題： {transcript.text}, 如果問題是空白，回答: 唔好意思，我聽唔明你嘅問題。"}
+                # {"role": "user", "content": f"base on these Q and A {x.json()}. Only give the answer for the following question: {transcript.text}, if the question is empty reply with: Sorry, I cannot provide an answer with out a question"}
             ]
         )
 
