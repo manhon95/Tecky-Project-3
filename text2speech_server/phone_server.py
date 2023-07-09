@@ -36,7 +36,7 @@ async def answer_call():
     try:
         resp = VoiceResponse()
 
-        resp.say("Hello. Please leave a message after the beep.")
+        resp.say("你好，請喺嗶一聲之後留低你嘅問題。", language='yue-HK', voice='Google.yue-HK-Standard-A')
         resp.record(action="/replay")
         resp.hangup()
 
@@ -60,7 +60,8 @@ async def answer_call(request: Request):
 
     print("Voice Response")
     resp = VoiceResponse()
-    resp.pause(length=60)
+    resp.play("http://com.twilio.sounds.music.s3.amazonaws.com/Mellotroniac_-_Flight_Of_Young_Hearts_Flute.mp3")
+    # resp.pause(length=60)
     resp.hangup()
 
     return Response(content=str(resp), media_type="text/xml")
